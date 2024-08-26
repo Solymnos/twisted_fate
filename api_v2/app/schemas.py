@@ -3,9 +3,9 @@ from pydantic import BaseModel, EmailStr, constr
 from typing import Union
 
 class UserBaseSchema(BaseModel):
-    name: str
+    username: str
     email: str
-    photo: str
+    photo: Union[str, None] = None
     role: Union[str, None] = None
     created_at: Union[datetime, None] = None
     updated_at: Union[datetime, None] = None
@@ -33,4 +33,3 @@ class UserResponseSchema(UserBaseSchema):
 class UserResponse(BaseModel):
     status: str
     user: UserResponseSchema
-

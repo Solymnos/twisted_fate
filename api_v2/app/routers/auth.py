@@ -109,4 +109,3 @@ def logout(response: Response, Authorize: AuthJWT = Depends(), user_id: str = De
     response.set_cookie('logged_in', '', -1)
 
     return {'status': 'success'}
-
