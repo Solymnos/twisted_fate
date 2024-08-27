@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from bson.objectid import ObjectId
 from fastapi import APIRouter, Response, status, Depends, HTTPException
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature
 
 from app import schemas, utils, oauth2
 from app.database import User
@@ -30,6 +31,10 @@ async def create_user(payload : schemas.CreateUserSchema) :
     payload.username = payload.username.lower()
     payload.created_at = datetime.utcnow()
     payload.updated_at = payload.created_at
+
+    token = utils.generate_token_email_validation(payload.email)
+    utils.send_validation_email(payload.email, token)
+
     result = User.insert_one(payload.dict())
     new_user = userResponseEntity(User.find_one({'_id' : result.inserted_id }))
     return { 'status' : 'success' , 'user' : new_user }
@@ -78,3 +83,19 @@ def logout(response : Response, Authorize : AuthJWT = Depends()) :
     Authorize.unset_jwt_cookies()
     response.set_cookie('logged_in' , '' , -1)
     return { 'status' : 'success' }
+
+@router.get('/verify/{token}')
+async def verify_email(token : str) :
+    validation_key = settings.VALIDATION_KEY
+    serializer = URLSafeTimedSerializer(validation_key)
+    try :
+        email = serializer.loads(token, salt='email-validation', max_age=3600)
+    except SignatureExpired : 
+        raise HTTPException(status_code=400, detail='Token expired')
+    except BadSignature :
+        raise HTTPException(status_code=400, detail='Invalid token')
+    user = User.find_one({'email' : email})
+    if not user :
+        raise HTTPException(status_code=404, details='User Not Found')
+    User.update_one({ 'email' : email } , { '$set' : { 'verified' : True }})
+    return { 'status' : 'success' , 'message' : 'Email verified successfully' }

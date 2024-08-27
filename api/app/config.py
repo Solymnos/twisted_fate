@@ -8,7 +8,8 @@ class Settings(BaseSettings) :
     REFRESH_TOKEN_EXPIRES_IN : int
     ACCESS_TOKEN_EXPIRES_IN : int
     JWT_ALGORITHM : str
-
+    VALIDATION_KEY : str
+    MAIL_APP_KEY : str
     class Config : 
         env_file = '.env'
 
