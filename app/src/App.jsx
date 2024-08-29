@@ -1,10 +1,12 @@
-import { Button } from "@/components/ui/button"
+import React , { useState } from "react"
+import Header from "@/components/global/Header"
 
-function App() {
 
+function App() 
+{
   return (
-    <div>
-      <Button>Click me</Button>
+    <div className='w-full'>
+      <Header />     
     </div>
   )
 }
