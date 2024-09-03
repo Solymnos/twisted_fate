@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
+import { email_validation } from "../../utils/ValidationUtils";
+import { userLogin } from "../../hooks/Auth";
 
 const LoginDialog = () => {
 
@@ -13,10 +15,29 @@ const LoginDialog = () => {
     const [ password , setPassword ] = useState('');
     const [ dialogOpen , setDialogOpen ] = useState(false);
     
-    const handleSubmit = () =>
+    let username = ''
+    let email = ''
+
+    const handleSubmit = async () =>
     {   
-        console.log(login);
-        console.log(email)
+        if (!email_validation(login))
+        {
+            username = login;
+        } else {
+            email = login;
+        }
+
+        let { success , response , error } = await userLogin({ username : username , email : email, password : password });
+        if (!success)
+        {
+            toast({
+                title : 'Echec de la connexion',
+                description : error,
+                variant : 'destructive'
+            })
+        } else {
+            setDialogOpen(false);
+        }
     }
 
     return (

@@ -13,5 +13,17 @@ export const apiRegister = async({ username , email , password , confirm_passwor
     };
 
     let response = await axios.post( API_URL + '/auth/register', payload);
-    console.log(response.data);
+    return (response);
+}
+
+export const apiLogin = async({ username , email , password }) =>
+{
+    const payload = {
+        username : username,
+        email : email,
+        password : password
+    };
+
+    let response = await axios.post( API_URL + '/auth/login', payload);
+    return (response);
 }

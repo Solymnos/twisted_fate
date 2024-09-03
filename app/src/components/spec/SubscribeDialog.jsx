@@ -59,6 +59,7 @@ const SubscribeDialog = () => {
                     description : 'Check ta boîte de récéption, un mail a été envoyé pour valider ton adresse mail. Tu peux maintenant te connecter !',
                     variant : 'default'
                 })
+                setDialogOpen(false);
             } else 
             {
                 toast({
