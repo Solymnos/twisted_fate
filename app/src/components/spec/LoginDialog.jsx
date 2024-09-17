@@ -9,14 +9,17 @@ import { useToast } from "@/components/ui/use-toast";
 import { email_validation } from "../../utils/ValidationUtils";
 import { userLogin } from "../../hooks/Auth";
 
-const LoginDialog = () => {
+const LoginDialog = ({ updateLoggedCookie }) => 
+{
 
     const [ login , setLogin ] = useState('');
     const [ password , setPassword ] = useState('');
     const [ dialogOpen , setDialogOpen ] = useState(false);
     
-    let username = ''
-    let email = ''
+    const { toast } = useToast();
+
+    let username = null
+    let email = null
 
     const handleSubmit = async () =>
     {   
@@ -36,6 +39,7 @@ const LoginDialog = () => {
                 variant : 'destructive'
             })
         } else {
+            updateLoggedCookie();
             setDialogOpen(false);
         }
     }

@@ -1,0 +1,11 @@
+{
+    "tournaments" : [
+        {
+            "OverviewPage": "LCK/2024 Season/Regional Finals",
+            "Region" : "LCK"
+        }, {
+            "OverviewPage" : "LFL Division 2/2025 Season/Promotion",
+            "Region" : "EMEA"
+        }
+    ]
+}

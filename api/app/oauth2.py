@@ -29,7 +29,7 @@ class NotVerified(Exception):
 class UserNotFound(Exception):
     pass
 
-def require_user(Authorize : AuthJWT = Depends()) : 
+def require_verified_user(Authorize : AuthJWT = Depends()) : 
     try : 
         Authorize.jwt_required()
         user_id = Authorize.get_jwt_subject()
@@ -39,6 +39,26 @@ def require_user(Authorize : AuthJWT = Depends()) :
             raise UserNotFound('User no longer exist')
         if not user['verified'] :
             raise NotVerified('You are not verified')
+    except Exception as e :
+        error = e.__class__.__name__
+        print(error)
+        if error == 'MissingTokenError' : 
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='You are not logged in')
+        if error == 'UserNotFound' :
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='User not found')
+        if error == 'UserNotVerified' :
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Please verify your account')
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Token is invalid or has expired')
+    return user_id
+
+def require_user(Authorize : AuthJWT = Depends()) :
+    try : 
+        Authorize.jwt_required()
+        user_id = Authorize.get_jwt_subject()
+        user = userEntity(User.find_one({ '_id' : ObjectId(str(user_id))}))
+
+        if not user :
+            raise UserNotFound('User no longer exist')
     except Exception as e :
         error = e.__class__.__name__
         print(error)
