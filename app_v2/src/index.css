@@ -67,3 +67,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+@font-face {
+  font-family: 'Thunder';
+  src : url('/fonts/Thunder-VF.ttf') format('truetype');
+  font-weight: bold;
+}

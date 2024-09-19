@@ -43,5 +43,7 @@
 
 @font-face {
   font-family: 'Thunder';
-  src : url('/src/assets/fonts/Thunder-BlackLC.otf')
+  src : url('/fonts/Thunder-VF.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
