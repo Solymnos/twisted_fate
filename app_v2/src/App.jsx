@@ -1,5 +1,8 @@
-import { Button } from "@/components/ui/button";
 import { BrowserRouter as Router , Route , Routes , Link } from "react-router-dom";
+
+import { CookieProvider } from "./context/CookieContext";
+import { UserProvider } from "./context/UserContext";
+import { ScheduleProvider } from "./context/ScheduleContext";
 
 import HomePage from "./pages/HomePage";
 import BetsPage from "./pages/BetsPage";
@@ -11,15 +14,21 @@ function App() {
   
 
   return (
-    <Router>
-      <Routes>
-        <Route path='/' element={<HomePage />}/>
-        <Route path='/bets' element={<BetsPage />}/>
-        <Route path='/profile' element={<ProfilePage />} />
-        <Route path='/team' element={<TeamPage /> } />
-        <Route path='/rank' element={<RankPage />} />
-      </Routes>
-    </Router>
+    <CookieProvider>
+      <UserProvider>
+        <ScheduleProvider>
+          <Router>
+            <Routes>
+              <Route path='/' element={<HomePage />}/>
+              <Route path='/bets' element={<BetsPage />}/>
+              <Route path='/profile' element={<ProfilePage />} />
+              <Route path='/team' element={<TeamPage /> } />
+              <Route path='/rank' element={<RankPage />} />
+            </Routes>
+          </Router>
+        </ScheduleProvider>
+      </UserProvider>
+    </CookieProvider>
   )
 }
 

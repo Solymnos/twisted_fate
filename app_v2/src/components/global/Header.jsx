@@ -1,10 +1,17 @@
-import React from 'react';
-import { Button } from '@/components/ui/button';
+import React , { useState , useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-
 import RegisterDialog from '../spec/RegisterDialog';
 
-const Header = () => {
+import Cookies from 'js-cookie';
+import { CookieContext } from '../../context/CookieContext';
+import { UserContext } from '../../context/UserContext';
+
+const Header = () =>
+{
+
+  const { isLogged, updateLoggedCookie } = useContext(CookieContext);
+  const { userData } = useContext(UserContext);
+
   return (
     <div className='flex flex-row bg-mPurple w-full min-h-24 p-8 items-center justify-between'>
         <div className='flex flex-row items-center gap-8'>
@@ -16,9 +23,18 @@ const Header = () => {
                 <Link to='/profile'><h2 className='text-mWhite font-thunder font-black text-3xl cursor-pointer hover:underline decoration-4 decoration-mDark'>Profil</h2></Link>
             </div>
         </div>
-        <div>
-            <RegisterDialog />
-        </div>
+        {
+          isLogged && userData ? (
+            <div>
+              <h1 className='uppercase font-black'>{userData.username}</h1>
+            </div>
+          ) : (
+            <div>
+              <RegisterDialog updateLoggedCookie={updateLoggedCookie}/>
+            </div>
+          )
+        }
+        
     </div>
   )
 }
