@@ -3,6 +3,8 @@ import requests
 import json 
 import os 
 
+#from app.database import Matches
+
 site = EsportsClient("lol")
 
 SCHEDULE_ALL_TOURNAMENTS = {}
@@ -29,11 +31,12 @@ def fetch_tournaments_schedule() :
     param = f"OverviewPage IN ('{tournaments_str}')"
 
     response = site.cargo_client.query(
-        tables="MatchSchedule=MS",#, Team=T1, Team=T2",
-        #join_on="MS.Team1=T1.Name,MS.Team2=T2.Name", 
-        fields="MS.Team1,MS.Team2,MS.DateTime_UTC, MS.OverviewPage, MS.ShownName", 
+        tables="MatchSchedule=MS",#, Teams=T1",
+        #join_on="MS.Team1=T1.Name", 
+        fields="MS.Team1 ,MS.Team2,MS.DateTime_UTC, MS.OverviewPage, MS.ShownName",#, T1.Image=T1Logo", 
         where = param
     )
+
     # response = site.cargo_client.query(
     #     tables="MatchSchedule=MS",
     #     #, Team=T1, Team=T2",
@@ -80,11 +83,13 @@ def fetch_tournaments_schedule() :
     print('+--------------+')
     print('|--> RESULT <--|')
     print('+--------------+')
-    print(SCHEDULE)
+    for match in SCHEDULE :
+        print(match)
     SCHEDULE_ALL_TOURNAMENTS = SCHEDULE
 
 def fetch_league_data() :
     print("FETCHING LEAGUE DATA")
+    #fetch_teams()
     fetch_tournaments_schedule()
 
 def get_schedule() :

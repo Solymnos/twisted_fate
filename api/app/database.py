@@ -11,5 +11,9 @@ except Exception :
     print('Unable to connect to the MongoDB server')
 
 db = client[settings.MONGO_INIT_DB_DATABASE]
+
 User = db.users
 User.create_index([('email', pymongo.ASCENDING)], unique=True)
+
+Matches = db.matches
+Matches.create_index([('MatchId')], unique=True)
