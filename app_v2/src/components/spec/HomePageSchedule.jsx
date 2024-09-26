@@ -13,10 +13,12 @@ const HomePageSchedule = () =>
 
     const isDisplayableMatch = ( match ) =>
     {
-        if (match.Team1 == "TBD" || match.Team2 == "TBD")
+        // Filtre excluant les matchs dont on ne connait pas encore les équipes
+        if (match.Team1 == "TBD" || match.Team2 == "TBD") 
         {
             return false;
         }
+        // Filtre excluant les matchs qui ne contiennent pas la team recherchée
         if (search != '')
         {
             if (!match.Team1.toLowerCase().includes(search.toLowerCase()) && !match.Team2.toLowerCase().includes(search.toLowerCase()))
@@ -24,11 +26,18 @@ const HomePageSchedule = () =>
                 return false;
             } 
         }
+        // Filtre excluant les matchs dont la compétition n'est pas sélectionnée
         if (!selectCompetitions.includes(match.OverviewPage))
         {
             return false;
         }
+        // Filtre excluant les matchs dont la date est dépassée
+        if (new Date(match.DateTime.replace(' ', 'T')) < new Date())
+        {
+            return false;
+        }
         return true;
+         
     }
 
     const filterScheduleData = ( scheduleData ) =>
@@ -36,16 +45,14 @@ const HomePageSchedule = () =>
         const displayScheduleData = [];
         for (let i = 0; i < scheduleData.length; i++)
         {
-            let competition = scheduleData[i];
-            for (let j = 0; j < competition.Matches.length; j++)
+            let match = scheduleData[i];
+            if (isDisplayableMatch(match))
             {
-                let match = competition.Matches[j];
-                if (isDisplayableMatch(match))
-                {
-                    displayScheduleData.push(match);
-                }
+                displayScheduleData.push(match);
             }
         }
+        console.log("displayScheduleData")
+        console.log(displayScheduleData)
         return displayScheduleData;
     }
 
@@ -54,9 +61,12 @@ const HomePageSchedule = () =>
         const competitionMenuData = [];
         for (let i = 0; i < scheduleData.length; i++)
         {
-            let competiton = scheduleData[i];
-            let competitionData = { id : competiton.Name, label : competiton.Name }
-            competitionMenuData.push(competitionData);
+            let match = scheduleData[i];
+            if (!competitionMenuData.some(tournament => tournament.id === match.OverviewPage))
+            {
+                let competitionData = { id : match.OverviewPage, label : match.ShownName }
+                competitionMenuData.push(competitionData);
+            }
         }
         return competitionMenuData;
     }
@@ -66,23 +76,23 @@ const HomePageSchedule = () =>
         const selectCompetitionInit = [];
         for (let i = 0; i < scheduleData.length; i++)
         {
-            let competition = scheduleData[i];
-            console.log(competition);
-            selectCompetitionInit.push(competition.Name);
+            let match = scheduleData[i];
+            if (!selectCompetitionInit.some(tournament => tournament == match.OverviewPage))
+            {
+                selectCompetitionInit.push(match.OverviewPage);
+            }
         }
-        console.log("INIT")
-        console.log(selectCompetitionInit);
         return selectCompetitionInit;
     }
 
     const sortScheduleData = (displayScheduleData) =>
     {
-        let sortedScheduleData = [...displayScheduleData].sort((a , b) => new Date(a.Date) - new Date(b.Date))
+        let sortedScheduleData = [...displayScheduleData].sort((a , b) => new Date(a.DateTime) - new Date(b.DateTime))
         let scheduleGroupByDate = {};
 
         for (let match of sortedScheduleData)
         {
-            const date = parseISO(match.Date);
+            const date = parseISO(match.DateTime);
             let day;
             if (isToday(date))
             {
