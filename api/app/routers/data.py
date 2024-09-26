@@ -10,3 +10,10 @@ async def get_schedule() :
     matches_not_started = Matches.find({"Status" : "NOT_STARTED"}, {"_id" : 0})
     SCHEDULE = list(matches_not_started)
     return { 'status' : 'success' , 'schedule' : SCHEDULE }
+
+
+@router.get('/over')
+async def get_over() :
+    matches_over = Matches.find({"Status" : "OVER"}, {"_id" : 0})
+    OVER = list(matches_over)
+    return { 'status' : 'success' , 'over' : OVER }

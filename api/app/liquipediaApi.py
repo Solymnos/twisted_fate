@@ -20,8 +20,9 @@ def load_tournaments_data_from_json() :
 
 def get_team_in_request(team_name) :
     global LIST_OF_TEAMS_REQUEST
-    if team_name not in LIST_OF_TEAMS_REQUEST:
-        LIST_OF_TEAMS_REQUEST.append(team_name)
+    team_name_request = team_name.split(" (")[0]
+    if team_name_request not in LIST_OF_TEAMS_REQUEST:
+        LIST_OF_TEAMS_REQUEST.append(team_name_request)
 
 def get_team_from_teams_data(team_name, teams_data) :
     for team in teams_data :
@@ -51,10 +52,10 @@ def fetch_teams_data(list) :
     response = site.cargo_client.query(
         tables="Teams=T",
         fields="T.Name, T.OverviewPage, T.Short, T.Region, T.Image",
-        where= cargo_request_param
+        where= cargo_request_param,
+        limit="max"
     )
     TEAMS_DATA = []
-    team_name_from_api = [team['Name'] for team in response]
     for team in list :
         team_data = get_team_from_teams_data(team, response)
         if (team_data) :
@@ -66,7 +67,7 @@ def fetch_teams_data(list) :
                     "Short" : team_data['Short'],
                     "Region" : team_data['Region'],
                     "Image" : team_data['Image'],
-                    "Image_Url" : image_url 
+                    "Image_Url" : image_url.split(".png")[0] + ".png"
                 }
             )
         else :
@@ -80,7 +81,32 @@ def fetch_teams_data(list) :
                     "Image_Url" : "https://link/to/default/image.png"
                 }
             )
+    print(TEAMS_DATA)
     LIST_OF_TEAMS_DATA = TEAMS_DATA
+
+def fetch_results_data():
+    tournaments_list = load_tournaments_data_from_json()
+
+    for tournament in tournaments_list:
+        cargo_request_param = f"OverviewPage IN ('{tournament['OverviewPage']}')"
+        response = site.cargo_client.query(
+            tables="ScoreboardGames=SG",
+            fields="SG.OverviewPage, SG.Team1, SG.Team2, SG.WinTeam, SG.LossTeam, DateTime_UTC, Winner, Team1Picks, Team2Picks, Team1Players, Team2Players, Gamename, GameId, MatchId, RiotPlatformGameId",
+            where=cargo_request_param,
+            limit="max"
+        )
+        for game in response :
+            match_exist = Matches.find_one({'MatchId' : game['MatchId']})
+            #if match_exist :
+                # RECUPERER LES GAMES DU MATCH
+                # EST CE QU'UNE GAME AVEC LE MEME GAMEID EXISTE ?
+                    # => OUI = ALORS ON L'AJOUTE A LA LISTE D'EXCLUSION
+                    # => NON = ALORS ON L'AJOUTE, PUIS ON L'AJOUTE A LA LISTE D'EXCLUSION
+                # EST CE QUE LE MATCH EST FINI AVEC CE MATCH
+                    # => OUI = ALORS CHANGE LE STATUS EN OVER ET ON VALIDE LES PARIS
+                    # => NON = ALORS CHANGE LE STATUS EN STARTED
+            # N'existe pas = SOIT ON LE CREE (chiant) soit on releve une erreur (moins chiant)
+
 
 def fetch_schedules_data():
     # Récupération des paramètres depuis le json
@@ -96,12 +122,10 @@ def fetch_schedules_data():
         )
         
         for match in response :
-            get_team_in_request(match['Team1'])
-            get_team_in_request(match['Team2'])
-            team1_data = get_team_from_teams_data(match['Team1'], LIST_OF_TEAMS_DATA)
-            team2_data = get_team_from_teams_data(match['Team2'], LIST_OF_TEAMS_DATA)
-
-            print(match)
+            get_team_in_request(match['Team1'].split(" (")[0])
+            get_team_in_request(match['Team2'].split(" (")[0])
+            team1_data = get_team_from_teams_data(match['Team1'].split(" (")[0], LIST_OF_TEAMS_DATA)
+            team2_data = get_team_from_teams_data(match['Team2'].split(" (")[0], LIST_OF_TEAMS_DATA)
 
             match_data = {
                 "MatchId" : match['MatchId'],
@@ -110,8 +134,8 @@ def fetch_schedules_data():
                 "ShownName" : match['ShownName'],
                 "BestOf" : match['BestOf'],
                 "UniqueMatch" : match['UniqueMatch'],
-                "Team1" : match['Team1'],
-                "Team2" : match['Team2'],
+                "Team1" : match['Team1'].split(" (")[0],
+                "Team2" : match['Team2'].split(" (")[0],
             }
 
             if (team1_data) :
@@ -140,24 +164,24 @@ def fetch_schedules_data():
             else :
                 match_data['Status'] = 'NOT_STARTED'
                 result = Matches.insert_one(match_data)
-                # 
-            # CHECK SI DANS LA DATABASE UN MATCH EXISTE DEJA AVEC CE "MATCH ID"
-                #SI OUI ON LE MET A JOUR AVEC LES INFORMATION QU'ON A RECUPERER (permet d'éviter les TBD)
-                #Si NON ON LE CREER ET LE REMPLI AVEC LES INFORMATIONS 
+        time.sleep(2)
 
-            # /!\ Lors de la première boucle les datas sont = none
-            # J'ai les data des teams
-            # J'ai les data du schedule
-            # Je dois maintenant les enregistrer dans le mongodb as matches
+
 
 
 def main_data_loop() :
+    x = 0
+    print("LOOP n°" + str(x))
     #FETCH TEAMS IN ORDER TO GET IMAGE
     fetch_teams_data(LIST_OF_TEAMS_REQUEST)
 
     #FETCH SCHEDULE BASED ON TOURNAMENT
     fetch_schedules_data()
 
+    #FETCH RESULT BASED ON TOURNAMENT
+    #fetch_results_data()
+    x += 1
 
 # TODO : Peut être transformé les strings pour que les équipes soient fetch même avec un apostrophe ou un parenthèse.
-# TODO : Crop l'url de l'image pour s'arrêter au png
+# TODO : Modifier le status à "OVER" quand il y a un "Winner" dans le fetching du schedule
+# TODO : Possiblement une bonne idée d'ajouter au fetching une liste d'exclusion parce que sinon on va récupérer en boucles des résultats qu'on aura déjà rentré 

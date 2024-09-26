@@ -32,10 +32,10 @@ const HomePageSchedule = () =>
             return false;
         }
         // Filtre excluant les matchs dont la date est dépassée
-        if (new Date(match.DateTime.replace(' ', 'T')) < new Date())
-        {
-            return false;
-        }
+        //if (new Date(match.DateTime.replace(' ', 'T')) < new Date())
+        //{
+        //    return false;
+        //}
         return true;
          
     }
@@ -168,14 +168,14 @@ const HomePageSchedule = () =>
                                                     <h1 className='text-mPurple font-bold'>{match.Date}</h1>
                                                     <h1 className='text-mPurple font-bold'>657 votes</h1>
                                                 </div>
-                                                <div className='border-mPurple border-2 rounded-3xl flex-1 flex flex-row '>
+                                                <div className='border-mPurple border-2 rounded-3xl flex-1 flex flex-row'>
                                                     <div className='w-1/2 flex flex-row justify-between items-center p-4 bg-mPurple rounded-2xl'>
-                                                        <img className='max-h-12 max-w-12' src='https://wp.solary.fr/wp-content/uploads/2024/03/PNG_logo_white-7.png' />
+                                                        <img className='max-h-12 max-w-12' src={match.Team1ImageUrl} />
                                                         <h1 className='text-mWhite font-bold text-2xl'>{match.Team1}</h1>
                                                     </div>
                                                     <div className='w-1/2 flex flex-row justify-between items-center p-4 rounded-2xl '>
                                                         <h1 className='text-mWhite font-bold text-2xl'>{match.Team2}</h1>
-                                                        <img className='max-h-12 max-w-12' src='https://wp.solary.fr/wp-content/uploads/2024/03/PNG_logo_white-7.png' />
+                                                        <img className='max-h-12 max-w-12' src={match.Team2ImageUrl} />
                                                     </div>
                                                 </div>
                                             </div>
