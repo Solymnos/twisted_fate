@@ -2,6 +2,7 @@ import React from 'react'
 import Header from '../components/global/Header'
 
 import HomePageSchedule from '../components/spec/HomePageSchedule'
+import HomePageOver from '../components/spec/HomePageOver'
 
 function HomePage() {
   return (
@@ -9,7 +10,7 @@ function HomePage() {
       <Header />
       <div className='w-full grow flex flex-row'>
         <HomePageSchedule />
-        <div className='w-1/4'>z</div>
+        <HomePageOver />
       </div>
     </div>
   )

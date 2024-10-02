@@ -4,6 +4,7 @@ import time
 from mwrogue.esports_client import EsportsClient
 import requests
 from app.database import Matches
+import math
 
 site = EsportsClient("lol")
 LIST_OF_TEAMS_REQUEST = []
@@ -81,8 +82,29 @@ def fetch_teams_data(list) :
                     "Image_Url" : "https://link/to/default/image.png"
                 }
             )
-    print(TEAMS_DATA)
     LIST_OF_TEAMS_DATA = TEAMS_DATA
+
+def game_is_in_gamelist(gameList, gameId) :
+        for game in gameList :
+            if (gameId == game['GameId']) :
+                return True
+        return False
+
+def is_last_game_of_bo(bo, T1, T2, gameList) :
+    T1Score = 0
+    T2Score = 0
+    
+    for game in gameList :
+        if (game['WinTeam'].split(" (")[0] == T1) :
+            T1Score = T1Score + 1
+        else :
+            T2Score = T2Score + 1
+    nb_wins_required = math.ceil(int(bo)/2)
+    if (T1Score == nb_wins_required) :
+        return True, T1
+    if (T2Score == nb_wins_required) :
+        return True, T2
+    return False, None
 
 def fetch_results_data():
     tournaments_list = load_tournaments_data_from_json()
@@ -91,22 +113,56 @@ def fetch_results_data():
         cargo_request_param = f"OverviewPage IN ('{tournament['OverviewPage']}')"
         response = site.cargo_client.query(
             tables="ScoreboardGames=SG",
-            fields="SG.OverviewPage, SG.Team1, SG.Team2, SG.WinTeam, SG.LossTeam, DateTime_UTC, Winner, Team1Picks, Team2Picks, Team1Players, Team2Players, Gamename, GameId, MatchId, RiotPlatformGameId",
+            fields="SG.OverviewPage, SG.Team1, SG.Team2, SG.WinTeam, SG.LossTeam, SG.DateTime_UTC, SG.Winner, SG.Team1Picks, SG.Team2Picks, SG.Team1Players, SG.Team2Players, SG.Gamename, SG.GameId, SG.MatchId, SG.RiotPlatformGameId",
             where=cargo_request_param,
             limit="max"
         )
         for game in response :
             match_exist = Matches.find_one({'MatchId' : game['MatchId']})
-            #if match_exist :
-                # RECUPERER LES GAMES DU MATCH
-                # EST CE QU'UNE GAME AVEC LE MEME GAMEID EXISTE ?
-                    # => OUI = ALORS ON L'AJOUTE A LA LISTE D'EXCLUSION
-                    # => NON = ALORS ON L'AJOUTE, PUIS ON L'AJOUTE A LA LISTE D'EXCLUSION
-                # EST CE QUE LE MATCH EST FINI AVEC CE MATCH
-                    # => OUI = ALORS CHANGE LE STATUS EN OVER ET ON VALIDE LES PARIS
-                    # => NON = ALORS CHANGE LE STATUS EN STARTED
-            # N'existe pas = SOIT ON LE CREE (chiant) soit on releve une erreur (moins chiant)
 
+            if match_exist :
+                gameList = match_exist.get('games', [])
+
+                if not game_is_in_gamelist(gameList, game['GameId']) :
+                    gameList.append({
+                        'OverviewPage' : game['OverviewPage'],
+                        'Team1' : game['Team1'].split(" (")[0],
+                        'Team2' : game['Team2'].split(" (")[0],
+                        'WinTeam' : game['WinTeam'],
+                        'LossTeam' : game['LossTeam'],
+                        'DateTime' : game['DateTime UTC'],
+                        'Winner' : game['Winner'],
+                        'Team1Picks' : game['Team1Picks'],
+                        'Team2Picks' : game['Team2Picks'],
+                        'Team1Players' : game['Team1Players'],
+                        'Team2Players' : game['Team2Players'],
+                        'Gamename' : game['Gamename'],
+                        'GameId' : game['GameId'],
+                        'MatchId' : game['MatchId'],
+                        'RiotPlatformGameId' : game['RiotPlatformGameId']
+                    })
+                    # TESTER SI LA GAME TERMINE LE MATCH 
+                    isLast, winner = is_last_game_of_bo(match_exist.get('BestOf'), match_exist.get('Team1'), match_exist.get('Team2'), gameList)
+                    if isLast :
+                        Matches.update_one(
+                            {
+                                'MatchId' : game['MatchId']
+                            },
+                            {
+                                '$set' : { 'games' : gameList, 'Status' : 'OVER', 'Winner' : winner }
+                            }
+                        )
+                    else :
+                        Matches.update_one(
+                            {
+                                'MatchId' : game['MatchId']
+                            },
+                            {
+                                '$set' : { 'games' : gameList, 'Status' : 'STARTED' }
+                            }
+                        )
+            else :
+                print('MatchId not existing')
 
 def fetch_schedules_data():
     # Récupération des paramètres depuis le json
@@ -170,8 +226,7 @@ def fetch_schedules_data():
 
 
 def main_data_loop() :
-    x = 0
-    print("LOOP n°" + str(x))
+    print(">LOOP")
     #FETCH TEAMS IN ORDER TO GET IMAGE
     fetch_teams_data(LIST_OF_TEAMS_REQUEST)
 
@@ -179,9 +234,8 @@ def main_data_loop() :
     fetch_schedules_data()
 
     #FETCH RESULT BASED ON TOURNAMENT
-    #fetch_results_data()
-    x += 1
-
+    fetch_results_data()
+    
 # TODO : Peut être transformé les strings pour que les équipes soient fetch même avec un apostrophe ou un parenthèse.
 # TODO : Modifier le status à "OVER" quand il y a un "Winner" dans le fetching du schedule
 # TODO : Possiblement une bonne idée d'ajouter au fetching une liste d'exclusion parce que sinon on va récupérer en boucles des résultats qu'on aura déjà rentré 

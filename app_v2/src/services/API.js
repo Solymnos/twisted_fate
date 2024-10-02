@@ -50,3 +50,9 @@ export const apiSchedule = async() =>
     let response = await axios.get( API_URL + '/data/schedule' );
     return ( response )
 }
+
+export const apiOver = async() =>
+{
+    let response = await axios.get( API_URL + '/data/over' );
+    return ( response )
+}

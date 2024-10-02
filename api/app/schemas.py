@@ -30,3 +30,8 @@ class UserResponseSchema(UserBaseSchema) :
 class UserResponse(BaseModel) :
     status : str
     user : UserResponseSchema
+
+class Bet(BaseModel):
+    predict : str
+    matchId : str
+    betType : str

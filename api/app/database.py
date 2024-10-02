@@ -17,3 +17,5 @@ User.create_index([('email', pymongo.ASCENDING)], unique=True)
 
 Matches = db.matches
 Matches.create_index([('MatchId')], unique=True)
+
+Bets = db.bets

@@ -3,6 +3,7 @@ import { BrowserRouter as Router , Route , Routes , Link } from "react-router-do
 import { CookieProvider } from "./context/CookieContext";
 import { UserProvider } from "./context/UserContext";
 import { ScheduleProvider } from "./context/ScheduleContext";
+import { OverProvider } from "./context/OverContext";
 
 import HomePage from "./pages/HomePage";
 import BetsPage from "./pages/BetsPage";
@@ -17,15 +18,17 @@ function App() {
     <CookieProvider>
       <UserProvider>
         <ScheduleProvider>
-          <Router>
-            <Routes>
-              <Route path='/' element={<HomePage />}/>
-              <Route path='/bets' element={<BetsPage />}/>
-              <Route path='/profile' element={<ProfilePage />} />
-              <Route path='/team' element={<TeamPage /> } />
-              <Route path='/rank' element={<RankPage />} />
-            </Routes>
-          </Router>
+          <OverProvider>
+            <Router>
+              <Routes>
+                <Route path='/' element={<HomePage />}/>
+                <Route path='/bets' element={<BetsPage />}/>
+                <Route path='/profile' element={<ProfilePage />} />
+                <Route path='/team' element={<TeamPage /> } />
+                <Route path='/rank' element={<RankPage />} />
+              </Routes>
+            </Router>
+          </OverProvider>
         </ScheduleProvider>
       </UserProvider>
     </CookieProvider>

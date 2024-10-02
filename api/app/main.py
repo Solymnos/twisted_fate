@@ -4,7 +4,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 import time
 
-from app.routers import auth, user, data
+from app.routers import auth, user, data, bets
 from app.riotApi import fetch_league_data
 from app.liquipediaApi import main_data_loop
 
@@ -32,6 +32,7 @@ app.add_middleware(
 app.include_router(auth.router, tags=['Auth'], prefix='/api/auth')
 app.include_router(user.router, tags=['Users'], prefix='/api/users')
 app.include_router(data.router, tags=['Data'], prefix='/api/data')
+app.include_router(data.router, tags=['Bets'], prefix='/api/bets')
 
 @app.on_event('startup')
 async def startup_event() :

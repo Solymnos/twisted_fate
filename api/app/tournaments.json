@@ -3,6 +3,10 @@
         {
             "OverviewPage": "2024 Season World Championship/Play-In",
             "Region" : "WORLDS"
+        },
+        {
+            "OverviewPage" : "2024 Season World Championship/Main Event",
+            "Region" : "WORLDS"
         }
     ]
 }

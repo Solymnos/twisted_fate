@@ -1,5 +1,4 @@
 import React , { createContext , useState , useEffect } from 'react';
-import { apiSchedule } from '../services/API';
 import { getSchedule } from '../hooks/Data';
 
 export const ScheduleContext = createContext();
