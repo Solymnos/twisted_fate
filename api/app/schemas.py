@@ -35,3 +35,7 @@ class Bet(BaseModel):
     predict : str
     matchId : str
     betType : str
+
+class BetCancel(BaseModel):
+    matchId : str
+    betType : str

@@ -4,6 +4,7 @@ import { CookieProvider } from "./context/CookieContext";
 import { UserProvider } from "./context/UserContext";
 import { ScheduleProvider } from "./context/ScheduleContext";
 import { OverProvider } from "./context/OverContext";
+import { BetsProvider } from "./context/BetsContext";
 
 import HomePage from "./pages/HomePage";
 import BetsPage from "./pages/BetsPage";
@@ -19,15 +20,17 @@ function App() {
       <UserProvider>
         <ScheduleProvider>
           <OverProvider>
-            <Router>
-              <Routes>
-                <Route path='/' element={<HomePage />}/>
-                <Route path='/bets' element={<BetsPage />}/>
-                <Route path='/profile' element={<ProfilePage />} />
-                <Route path='/team' element={<TeamPage /> } />
-                <Route path='/rank' element={<RankPage />} />
-              </Routes>
-            </Router>
+            <BetsProvider>
+              <Router>
+                <Routes>
+                  <Route path='/' element={<HomePage />}/>
+                  <Route path='/bets' element={<BetsPage />}/>
+                  <Route path='/profile' element={<ProfilePage />} />
+                  <Route path='/team' element={<TeamPage /> } />
+                  <Route path='/rank' element={<RankPage />} />
+                </Routes>
+              </Router>
+            </BetsProvider>
           </OverProvider>
         </ScheduleProvider>
       </UserProvider>

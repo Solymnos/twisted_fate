@@ -32,7 +32,7 @@ app.add_middleware(
 app.include_router(auth.router, tags=['Auth'], prefix='/api/auth')
 app.include_router(user.router, tags=['Users'], prefix='/api/users')
 app.include_router(data.router, tags=['Data'], prefix='/api/data')
-app.include_router(data.router, tags=['Bets'], prefix='/api/bets')
+app.include_router(bets.router, tags=['Bets'], prefix='/api/bets')
 
 @app.on_event('startup')
 async def startup_event() :

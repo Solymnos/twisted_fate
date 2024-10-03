@@ -3,7 +3,8 @@ import { format , isToday , isTomorrow , parseISO , isSameDay } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { ScheduleContext } from '../../context/ScheduleContext';
 import { Input } from '@/components/ui/input';
-import { Checkbox } from "@/components/ui/checkbox"
+import { Checkbox } from "@/components/ui/checkbox";
+import ScheduleMatch from "@/components/spec/ScheduleMatch";
 
 const HomePageSchedule = () => 
 {
@@ -158,31 +159,7 @@ const HomePageSchedule = () =>
                                 <h1 className='text-mWhite text-3xl font-bold'>{day}</h1>
                                 {
                                     sortedScheduleData[day].map(match => (
-                                        <div className='flex flex-row'>
-                                            <div className='rotate-180 bg-mDark text-mPurple text-center text-3xl font-black' style={{ writingMode: 'vertical-rl'}}>
-                                                95%
-                                            </div>
-                                            <div className='flex-1'>
-                                                <div className='flex flex-row justify-between'>
-                                                    <h1 className='text-mPurple font-bold'>{match.ShownName}</h1>
-                                                    <h1 className='text-mPurple font-bold'>{match.Date}</h1>
-                                                    <h1 className='text-mPurple font-bold'>657 votes</h1>
-                                                </div>
-                                                <div className='border-mPurple border-2 rounded-3xl flex-1 flex flex-row'>
-                                                    <div className='w-1/2 flex flex-row justify-between items-center p-4 bg-mPurple rounded-2xl'>
-                                                        <img className='max-h-12 max-w-12' src={match.Team1ImageUrl} />
-                                                        <h1 className='text-mWhite font-bold text-2xl'>{match.Team1}</h1>
-                                                    </div>
-                                                    <div className='w-1/2 flex flex-row justify-between items-center p-4 rounded-2xl '>
-                                                        <h1 className='text-mWhite font-bold text-2xl'>{match.Team2}</h1>
-                                                        <img className='max-h-12 max-w-12' src={match.Team2ImageUrl} />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className='rotate-270 bg-mDark text-mPurple text-center text-3xl font-black' style={{ writingMode: 'vertical-rl'}}>
-                                                5%
-                                            </div>
-                                        </div>
+                                        <ScheduleMatch match={match} />
                                     ))
                                 }
                             </div>

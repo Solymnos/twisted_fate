@@ -1,7 +1,6 @@
 [ ] Dans le schedule : remplacer la bug div par une card jsp ?
 [ ] Dans le schedule : afficher que les 5 premiers matchs, puis les 5 suivants si l'utilisateur scroll
 [ ] Faire la même chose que avec les schedules mais pour les résultats
-[ ] Systeme de betting
 
 
 A PENSER POUR PLUS TARD : 
@@ -16,10 +15,9 @@ DONE :
 [X] Dans le back : trouver un moyen de récupérer les différents logo des équipes pour les transmettre au front
 [x] Dans le back : créer une base de données pour les matchs où je stock les différents données. 
 [X] Dans le schedule : trier les matchs par dates, et afficher la date en big, avec un "aujourd'hui" et un "demain"
+[X] Systeme de betting
 
 
-
-1) REQUEST LES SCOREBOARDS PAR TOURNAMENT
-2) POUR CHAQUE MATCHS => L'add dans la database de mongo
-3) DETECTER QU'UN MATCH EST TERMINE => Changer le status dans la bdd
-                                    => Valider/Invalider les bets
+1) Affichage pour un joueur de ses paris
+2) Ajouter à la boucle la validation des paris
+3) Clear le code et voir pour ouverture beta ?
