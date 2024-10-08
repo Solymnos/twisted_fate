@@ -2,11 +2,12 @@ import React from 'react'
 
 import { Progress } from "@/components/ui/progress"
 
-const LoadingPage = () => {
+const LoadingPage = ({ loadingValue , loadingText }) => {
     return (
-        <div className='h-screen w-screen flex flex-col bg-bg items-center justify-center'>
-            <h1 className='text-hl'>LoadingPage</h1>
-            <Progress value={33}/>
+        <div className='h-screen w-screen flex flex-col bg-bg items-center justify-center gap-5'>
+            
+            <Progress className='max-w-60' value={loadingValue}/>
+            <text className='text-hl'>{loadingText}</text>
         </div>
     )
 }
