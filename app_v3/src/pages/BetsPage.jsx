@@ -3,11 +3,10 @@ import Header from '../components/global/Header';
 
 function BetsPage() {
   return (
-    <div className='w-full min-h-dvh flex bg-mDark flex-col'>
+    <div className='w-screen min-h-dvh flex bg-bg flex-col'>
       <Header />
-      <div className='w-full grow justify-center text-center items-center flex'>
-        <HomePageSchedule />
-        <HomePageOver />
+      <div className='w-full grow flex flex-col items-center gap-8'>
+
       </div>
     </div>
   )

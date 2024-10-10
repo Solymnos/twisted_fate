@@ -1,43 +1,70 @@
-import React , { useState , useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
-import RegisterDialog from '../spec/RegisterDialog';
+import React , { useContext } from 'react';
+import { Link , useLocation } from 'react-router-dom';
 
-import Cookies from 'js-cookie';
 import { CookieContext } from '../../context/CookieContext';
 import { UserContext } from '../../context/UserContext';
+import RegisterDialog from '../spec/RegisterDialog';
 
 const Header = () =>
 {
 
-  const { isLogged, updateLoggedCookie } = useContext(CookieContext);
-  const { userData } = useContext(UserContext);
+	const location = useLocation();
 
-  return (
-	<div className='flex flex-row w-full min-h-24 p-8 justify-between'>
-		<div className='flex-1 content-center items-center'>
-			<Link to='/'><h1 className='text-ltext font-thunder font-black text-4xl tracking-tight cursor-pointer'>TWISTED<span className='text-hl'>FATE</span></h1></Link>
-		</div>
-		<div className='flex-1 flex flex-row justify-center items-center gap-4'>
-			<Link to='/bets'><h2 className='font-sans text-ltext text-2xl cursor-pointer transition-all duration-1000 bg-clip-text' id='appear'>Bets</h2></Link>
-            <Link to='/rank'><h2 className='font-sans text-ltext text-2xl cursor-pointer transition-all duration-1000 bg-clip-text' id='appear'>Notes</h2></Link>
-            <Link to='/team'><h2 className='font-sans text-ltext text-2xl cursor-pointer transition-all duration-1000 bg-clip-text' id='appear'>Team</h2></Link>
-            <Link to='/profile'><h2 className='font-sans text-ltext text-2xl cursor-pointer transition-all duration-1000 bg-clip-text' id='appear'>Profil</h2></Link>
-		</div>
-		<div className='flex-1 flex justify-end items-center '>
-		{
-          isLogged && userData ? (
-            <div>
-              <h1 className='uppercase font-black'>{userData.username}</h1>
-            </div>
-          ) : (
-            <div>
-              <RegisterDialog updateLoggedCookie={updateLoggedCookie}/>
-            </div>
-          )
-        }
-		</div>
-    </div>
-  )
+    const { isLogged, updateLoggedCookie } = useContext(CookieContext);
+    const { userData } = useContext(UserContext);
+
+    return (
+		<div className='flex flex-row w-full min-h-24 p-8 justify-between '>
+			<div className='flex-1 content-center items-center'>
+				<Link to='/'><h1 className='text-ltext font-thunder font-black text-4xl tracking-tight cursor-pointer'>TWISTED<span className='text-hl'>FATE</span></h1></Link>
+			</div>
+			<div className='flex-1 flex flex-row justify-center items-center gap-4'>
+				{
+					location.pathname === '/bets' ? (
+						<Link to='/bets'><h2 className='font-sans text-hl text-2xl cursor-pointer'>Bets</h2></Link>
+					) :
+					(
+						<Link to='/bets'><h2 className='font-sans text-ltext text-2xl cursor-pointer transition-all duration-1000 bg-clip-text' id='appear'>Bets</h2></Link>
+					)
+				}
+			    {
+			        location.pathname === '/rank' ? (
+			            <Link to='/rank'><h2 className='font-sans text-hl text-2xl cursor-pointer'>Notes</h2></Link>
+			        ) : (
+			            <Link to='/rank'><h2 className='font-sans text-ltext text-2xl cursor-pointer transition-all duration-1000 bg-clip-text' id='appear'>Notes</h2></Link>
+			        )
+			    }
+                {
+                    location.pathname === '/team' ? (
+                        <Link to='/team'><h2 className='font-sans text-hl text-2xl cursor-pointer'>Team</h2></Link>
+                    ) : (
+						<Link to='/team'><h2 className='font-sans text-ltext text-2xl cursor-pointer transition-all duration-1000 bg-clip-text' id='appear'>Team</h2></Link>
+                    )
+                }
+                {
+                    location.pathname === '/profile' ? (
+                        <Link to='/profile'><h2 className='font-sans text-hl text-2xl cursor-pointer'>Profil</h2></Link>
+                    ) : (
+                        <Link to='/profile'><h2 className='font-sans text-ltext text-2xl cursor-pointer transition-all duration-1000 bg-clip-text' id='appear'>Profil</h2></Link>
+                    )
+                }
+                
+			</div>
+			<div className='flex-1 flex justify-end items-center '>
+			{
+            isLogged && userData ? (
+                <div>
+                    <h1 className='uppercase font-black'>{userData.username}</h1>
+                </div>
+            ) : (
+                <div>
+                <RegisterDialog updateLoggedCookie={updateLoggedCookie}/>
+                </div>
+            )
+            }   
+			</div>
+        </div>
+    )
 }
 
 export default Header

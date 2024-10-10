@@ -16,14 +16,15 @@ def scheduler() :
     #scheduler.add_job(fetch_league_data, trigger=IntervalTrigger(seconds=60), id='fetch_league_data', name='Fetch LCK data every minutes', replacing_existing=True)
     scheduler.add_job(main_data_loop, trigger=IntervalTrigger(seconds=60), id='fetch_league_data', name='Fetch LCK data every minutes', replacing_existing=True)
 
-origins = [
-    'http://localhost:5173',
-    'http://127.0.0.1:5173'
-]
+##origins = [
+##    'http://localhost:5173',
+##    'http://127.0.0.1:5173',
+##    ''
+##]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=['*'],
     allow_credentials=True,
     allow_methods=['*'],
     allow_headers=['*']

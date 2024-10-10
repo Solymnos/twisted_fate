@@ -34,6 +34,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 h1 {
@@ -148,4 +149,8 @@ button:focus-visible {
 
 #appear:hover {
   background-size: 100% 100%;
+}
+
+* {
+  box-sizing: border-box;
 }
