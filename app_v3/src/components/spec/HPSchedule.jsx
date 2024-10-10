@@ -5,9 +5,53 @@ import { ScheduleContext } from '@/context/ScheduleContext'
 const HPSchedule = () => 
 {
     const { scheduleData } = useContext(ScheduleContext);
+
+    const parseScheduleData = (sortedScheduleData) =>
+    {
+        let parsedScheduleData = [];
+
+        for (let i = 0; i < sortedScheduleData.length; i++)
+        {
+            if (sortedScheduleData[i].Team1 !== 'TBD' && sortedScheduleData[i].Team2 !== 'TBD')
+            {
+                parsedScheduleData.push(sortedScheduleData[i]);
+            }
+        }
+
+        return parsedScheduleData;
+    }
     
-    const sortedScheduleData = scheduleData.sort((a , b) => b.DateTime - a.DateTime);
-    const displayScheduleData = sortedScheduleData.slice(0, 4);
+    const formatDate = (date) =>
+    {
+        const eventDate = new Date(date);
+        const today = new Date();
+    
+        today.setHours(0, 0, 0, 0);
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+
+        const timeOptions = { hour : '2-digit' , minute : '2-digit' };
+
+        if (eventDate.toDateString() === today.toDateString())
+        {
+            const time = eventDate.toLocaleTimeString('fr-FR', timeOptions).replace(':', 'h');
+            return `Aujourd'hui à ${time}`
+        }
+
+        if (eventDate.toDateString() === tomorrow.toDateString())
+        {
+            const time = eventDate.toLocaleTimeString('fr-FR', timeOptions).replace(':', 'h');
+            return `Demain à ${time}`
+        }
+
+        const options = { day : 'numeric' , month : 'long', hour : '2-digit', minute: '2-digit' };
+        return eventDate.toLocaleDateString('fr-FR', options).replace(':', 'h');
+
+    }
+
+    const sortedScheduleData = scheduleData.sort((a , b) => new Date(a.DateTime) - new Date(b.DateTime));
+    const parsedScheduleData = parseScheduleData(sortedScheduleData);
+    const displayScheduleData = parsedScheduleData.slice(0, 4);
     
     return (
         <div className='w-1/2 p-8 flex flex-col gap-8 h-min'>
@@ -35,7 +79,7 @@ const HPSchedule = () =>
                                 </div>
                                 <div className='w-full flex flex-col text-center bg-lightbg rounded-b-2xl'>
                                     <h1 className='font-sans text-ltext text-2xl font-bold'>{match.ShownName}</h1>
-                                    <h2 className='font-sans text-ltext text-base'>{match.DateTime}</h2>
+                                    <h2 className='font-sans text-ltext text-base'>{formatDate(match.DateTime)}</h2>
                                 </div>
                             </div>
                         </div>

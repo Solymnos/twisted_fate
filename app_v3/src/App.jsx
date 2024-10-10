@@ -27,7 +27,7 @@ function App()
 	const { fetchSchedule , scheduleData } = useContext(ScheduleContext);
 	const { fetchLogCookie , isLogged } = useContext(CookieContext);
 	const { fetchUser } = useContext(UserContext);
-	const { fetchAllBets } = useContext(BetsContext);
+	const { fetchAllBets , fetchGlobalBets } = useContext(BetsContext);
 
 	useEffect(() =>
 	{
@@ -66,6 +66,13 @@ function App()
 			setLoadingText('Chargement des images...')
 		}
 
+		const initUnlogBets = async () =>
+		{
+			await fetchGlobalBets();
+			setLoadingValue(50);
+			setLoadingText('Chargement des images...')
+		}
+
 		const initAll = async () =>
 		{
 			await initCookie();
@@ -75,6 +82,8 @@ function App()
 			{
 				await initUser();
 				await initBets();
+			} else {
+				await initUnlogBets();
 			}
 			// await initImages( scheduleData , overData );
 		}

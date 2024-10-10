@@ -2,14 +2,14 @@ import React from 'react';
 import Header from '../components/global/Header';
 
 function TeamPage() {
-  return (
-    <div className='w-full min-h-dvh flex bg-mDark flex-col'>
-      <Header />
-      <div className='w-full grow justify-center text-center items-center flex'>
-        <h1 className='text-mWhite'>Pas encore prêt, bientôt !</h1>
-      </div>
-    </div>
-  )
+	return (
+    	<div className='w-screen min-h-dvh flex bg-bg flex-col'>
+        	<Header />
+        	<div className='w-full grow flex flex-col items-center gap-8'>
+				
+      		</div>
+    	</div>
+  	)
 }
 
 export default TeamPage

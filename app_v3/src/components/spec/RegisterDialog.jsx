@@ -1,4 +1,4 @@
-import React , { useState } from "react";
+import React , { useContext, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
@@ -9,8 +9,9 @@ import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/hooks/use-toast";
 import { username_validation , email_validation , password_validation } from "../../utils/ValidationUtils";
 import { userLogin , userRegister } from "../../hooks/Auth";
+import { CookieContext } from "@/context/CookieContext";
 
-const RegisterDialog = ({ updateLoggedCookie }) => 
+const RegisterDialog = () => 
 {
 
     // LOGIN VARIABLE
@@ -18,6 +19,7 @@ const RegisterDialog = ({ updateLoggedCookie }) =>
     const [ login , setLogin ] = useState('');
     const [ password , setPassword ] = useState('');
     const [ dialogOpen , setDialogOpen ] = useState(false);
+    const { fetchLogCookie } = useContext(CookieContext);
 
     let username = null
     let email = null
@@ -30,8 +32,6 @@ const RegisterDialog = ({ updateLoggedCookie }) =>
     const [ reg_confirm_password , setRegConfirmPassword ] = useState('');
 
     const { toast } = useToast();
-
-    
 
     const handleSubmitLogin = async () =>
     {   
@@ -51,7 +51,7 @@ const RegisterDialog = ({ updateLoggedCookie }) =>
                 variant : 'destructive'
             })
         } else {
-            updateLoggedCookie();
+            await fetchLogCookie();
             setDialogOpen(false);
         }
     }
@@ -110,37 +110,37 @@ const RegisterDialog = ({ updateLoggedCookie }) =>
     return (
         <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <AlertDialogTrigger asChild>
-                <Button className='bg-mWhite text-mDark text-xl p-6 rounded-3xl hover:text-mWhite font-thunder font-bold align-middle'>Se connecter</Button>
+                <Button className='bg-card text-dtext text-xl p-6 rounded-3xl hover:text-mWhite font-thunder font-bold align-middle hover:bg-hl hover:border-hl'>Se connecter</Button>
             </AlertDialogTrigger>
-            <AlertDialogContent className='bg-mDark border-mPurple rounded-xl shadow-mPurple shadow-lg'>
+            <AlertDialogContent className='bg-bg border-hl rounded-xl shadow-hl shadow-lg'>
                 <Tabs defaultValue="register">
-                    <TabsList className='w-full mb-4 bg-mDark text-white border-mPurple border-2 rounded-xl'>
-                        <TabsTrigger className='w-full rounded-xl active:bg-mPurple' value="register">S'inscrire</TabsTrigger>
-                        <TabsTrigger className='w-full rounded-xl' value="login">Se connecter</TabsTrigger>
+                    <TabsList className='w-full mb-4 bg-bg text-ltext border-hl border-2 rounded-xl'>
+                        <TabsTrigger className='w-full rounded-xl text-dtext data-[state=active]:bg-hl' value="register">S'inscrire</TabsTrigger>
+                        <TabsTrigger className='w-full rounded-xl text-dtext data-[state=active]:bg-hl' value="login">Se connecter</TabsTrigger>
                     </TabsList>
                     <TabsContent value="register">
                     <div className='grid gap-4'>
                         <div className='grid gap-4'>
                                 <div className='grid gap-2'>
-                                    <Label className='text-mWhite'>Nom d'utilisateur</Label>
-                                    <Input className='text-mWhite bg-mDark rounded-xl' id='username' placeholder={'Nom d' + `\'` + 'utilisateur'} value={reg_username} onChange={(e) => setRegUsername(e.target.value)} required />
+                                    <Label className='text-hl'>Nom d'utilisateur</Label>
+                                    <Input className='text-dtext bg-card rounded-xl' id='username' placeholder={'Nom d' + `\'` + 'utilisateur'} value={reg_username} onChange={(e) => setRegUsername(e.target.value)} required />
                                 </div>
                                 <div className='grid gap-2'>
-                                    <Label className='text-mWhite'>Adresse mail</Label>
-                                    <Input className='text-mWhite bg-mDark rounded-xl' id='email' type='email' placeholder='m@example.com' value={reg_email} onChange={(e) => setRegEmail(e.target.value)} required />
+                                    <Label className='text-hl'>Adresse mail</Label>
+                                    <Input className='text-dtext bg-card rounded-xl' id='email' type='email' placeholder='m@example.com' value={reg_email} onChange={(e) => setRegEmail(e.target.value)} required />
                                 </div>
                                 <div className='grid gap-2'>
-                                    <Label className='text-mWhite'>Mot de passe</Label>
-                                    <Input className='text-mWhite bg-mDark rounded-xl' id='password' type='password' placeholder='Mot de passe' value={reg_password} onChange={(e) => setRegPassword(e.target.value)} required />
+                                    <Label className='text-hl'>Mot de passe</Label>
+                                    <Input className='text-dtext bg-card rounded-xl' id='password' type='password' placeholder='Mot de passe' value={reg_password} onChange={(e) => setRegPassword(e.target.value)} required />
                                 </div>
                                 <div className='grid gap-2'>
-                                    <Label className='text-mWhite'>Confirmer le mot de passe</Label>
-                                    <Input className='text-mWhite bg-mDark rounded-xl' id='password_conf' type='password' placeholder='Confirmation mot de passe' value={reg_confirm_password} onChange={(e) => setRegConfirmPassword(e.target.value)} required />
+                                    <Label className='text-hl'>Confirmer le mot de passe</Label>
+                                    <Input className='text-dtext bg-card rounded-xl' id='password_conf' type='password' placeholder='Confirmation mot de passe' value={reg_confirm_password} onChange={(e) => setRegConfirmPassword(e.target.value)} required />
                                 </div>
                             </div>
                             <AlertDialogFooter>
-                                <AlertDialogCancel className='rounded-xl'>Cancel</AlertDialogCancel>
-                                <Button className='bg-mPurple text-mDark hover:text-mPurple hover:border-mPurple border-2 border-mPurple rounded-xl' onClick={() => handleSubmitRegister()}>Continue</Button>
+                                <AlertDialogCancel className='rounded-xl bg-card'>Cancel</AlertDialogCancel>
+                                <Button className='bg-hl  text-dtext hover:text-hl hover:bg-bg hover:border-hl border-2 border-hl rounded-xl' onClick={() => handleSubmitRegister()}>Continue</Button>
                             </AlertDialogFooter>
                         </div>
                     </TabsContent>
@@ -148,17 +148,17 @@ const RegisterDialog = ({ updateLoggedCookie }) =>
                         <div className='grid gap-4'>
                             <div className='grid gap-4'>
                                 <div className='grid gap-2'>
-                                    <Label className='text-mWhite'>Nom d'utilisateur/Email</Label>
-                                    <Input className='text-mWhite bg-mDark rounded-xl' id='login' placeholder={'Nom d' + `\'` + 'utilisateur ou email'} value={login} onChange={(e) => setLogin(e.target.value)} required />
+                                    <Label className='text-hl'>Nom d'utilisateur/Email</Label>
+                                    <Input className='text-dtext bg-card rounded-xl' id='login' placeholder={'Nom d' + `\'` + 'utilisateur ou email'} value={login} onChange={(e) => setLogin(e.target.value)} required />
                                 </div>
                                 <div className='grid gap-2'>
-                                    <Label className='text-mWhite'>Mot de passe</Label>
-                                    <Input className='text-mWhite bg-mDark rounded-xl' id='password' type='password' placeholder='Mot de passe' value={password} onChange={(e) => setPassword(e.target.value)} required />
+                                    <Label className='text-hl'>Mot de passe</Label>
+                                    <Input className='text-dtext bg-card rounded-xl' id='password' type='password' placeholder='Mot de passe' value={password} onChange={(e) => setPassword(e.target.value)} required />
                                 </div>
                             </div>
                             <AlertDialogFooter>
                                 <AlertDialogCancel className='rounded-xl'>Cancel</AlertDialogCancel>
-                                <Button className='bg-mPurple text-mDark hover:text-mPurple hover:border-mPurple border-2 border-mPurple rounded-xl' onClick={() => handleSubmitLogin()}>Continue</Button>
+                                <Button className='bg-hl text-dtext hover:text-hl hover:bg-bg hover:border-hl border-2 border-hl rounded-xl' onClick={() => handleSubmitLogin()}>Continue</Button>
                             </AlertDialogFooter>
                         </div>
                     </TabsContent>

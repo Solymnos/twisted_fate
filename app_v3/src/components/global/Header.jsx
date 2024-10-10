@@ -54,11 +54,11 @@ const Header = () =>
 			{
             isLogged && userData ? (
                 <div>
-                    <h1 className='uppercase font-black'>{userData.username}</h1>
+                    <h1 className='uppercase font-black font-sans text-xl text-ltext'>{userData.username}</h1>
                 </div>
             ) : (
                 <div>
-                <RegisterDialog updateLoggedCookie={updateLoggedCookie}/>
+                    <RegisterDialog updateLoggedCookie={updateLoggedCookie}/>
                 </div>
             )
             }   

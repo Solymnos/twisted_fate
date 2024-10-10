@@ -9,10 +9,10 @@ const HPOver = () =>
 {
     const { overData } = useContext(OverContext);
     
-    const sortedOverData = overData.sort((a , b) => b.DateTime - a.DateTime);
+    const sortedOverData = overData.sort((a , b) => new Date(b.DateTime) - new Date(a.DateTime));
     const displayOverData = sortedOverData.slice(0, 10);
     
-    console.log(overData);
+    console.log(sortedOverData);
     
     return (
         <div className='bg-lightbg w-full p-8 box-border'>

@@ -1,11 +1,22 @@
-import React , { createContext , useState } from 'react';
+import React , { createContext , useState , useEffect, useContext } from 'react';
 import { userGetMe } from '../hooks/User';
+import { CookieContext } from './CookieContext';
 
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) =>
 {
     const [ userData , setUserData ] = useState(null);
+    const { isLogged } = useContext(CookieContext);
+
+    useEffect(() => 
+    {
+        const updateUser = async () =>
+        {
+            await fetchUser();
+        }
+        updateUser();
+    }, [isLogged])
 
     const fetchUser = async () =>
     {
