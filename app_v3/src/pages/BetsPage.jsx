@@ -52,6 +52,17 @@ function BetsPage()
 		{
 			return false;
 		}
+
+		console.log(selectedCompetitions);
+
+		if (selectedCompetitions.length !== 0)
+		{
+			if (!selectedCompetitions.includes(match.ShownName))
+			{
+				return false;
+			}
+		}
+
 		return true;
 	}
 

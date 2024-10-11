@@ -7,6 +7,10 @@
         {
             "OverviewPage" : "2024 Season World Championship/Main Event",
             "Region" : "WORLDS"
+        },
+        {
+            "OverviewPage" : "Coupe de France 2024",
+            "Region" : "EMEA"
         }
     ]
 }

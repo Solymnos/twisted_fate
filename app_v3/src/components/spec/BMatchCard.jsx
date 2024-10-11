@@ -87,15 +87,15 @@ const BMatchCard = ({ match }) =>
                     <h1 className='text-ltext font-bold font-sans text-sm'>{match.DateTime}</h1>
                     <h1 className='text-ltext font-bold font-sans text-sm'>{matchBetsData.total} vote(s)</h1>
                 </div>
-                <div className='bg-card rounded-2xl flex-1 flex flex-row min-h-24'>
+                <div className='bg-card rounded-2xl flex-1 flex flex-row min-h-24 border-4 border-hl'>
                     {
                         predict == match.Team1 ? (
-                            <div onClick={ async () => await handleCancel(match.MatchId, 'WINNER')} className='w-1/2 flex flex-row justify-between items-center p-4 bg-hl rounded-2xl cursor-pointer'>
+                            <div onClick={ async () => await handleCancel(match.MatchId, 'WINNER')} className='w-1/2 flex flex-row justify-between items-center p-4 bg-hl rounded-xl cursor-pointer'>
                                 <img className='max-h-12 max-w-12' src={match.Team1ImageUrl} />
                                 <h1 className='text-dtext font-bold text-2xl'>{match.Team1}</h1>
                             </div>
                         ) : (
-                            <div onClick={ async () => await handleUpdate(match.MatchId, 'WINNER', match.Team1)} className='w-1/2 flex flex-row justify-between items-center p-4  rounded-2xl cursor-pointer'>
+                            <div onClick={ async () => await handleUpdate(match.MatchId, 'WINNER', match.Team1)} className='w-1/2 flex flex-row justify-between items-center p-4 cursor-pointer rounded-xl bg-card'>
                                 <img className='max-h-12 max-w-12' src={match.Team1ImageUrl} />
                                 <h1 className='text-dtext font-bold text-2xl'>{match.Team1}</h1>
                             </div>
@@ -103,7 +103,7 @@ const BMatchCard = ({ match }) =>
                     }
                     {
                         predict == match.Team2 ? (
-                            <div onClick={ async () => await handleCancel(match.MatchId, 'WINNER')} className='w-1/2 flex flex-row justify-between items-center p-4 bg-hl rounded-2xl cursor-pointer'>
+                            <div onClick={ async () => await handleCancel(match.MatchId, 'WINNER')} className='w-1/2 flex flex-row justify-between items-center p-4 bg-hl rounded-xl cursor-pointer'>
                                 <h1 className='text-dtext font-bold text-2xl'>{match.Team2}</h1>
                                 <img className='max-h-12 max-w-12' src={match.Team2ImageUrl} />
                             </div>

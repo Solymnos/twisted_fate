@@ -21,7 +21,7 @@ def load_tournaments_data_from_json() :
 
 def get_team_in_request(team_name) :
     global LIST_OF_TEAMS_REQUEST
-    team_name_request = team_name.split(" (")[0]
+    team_name_request = team_name.split(" (")[0].replace("'", " ")
     if team_name_request not in LIST_OF_TEAMS_REQUEST:
         LIST_OF_TEAMS_REQUEST.append(team_name_request)
 
@@ -172,7 +172,7 @@ def fetch_schedules_data():
         cargo_request_param = f"OverviewPage IN ('{tournament['OverviewPage']}')"
         response = site.cargo_client.query(
             tables="MatchSchedule=MS",
-            fields="MS.Team1, MS.Team2, MS.DateTime_UTC, MS.OverviewPage, MS.ShownName, MS.BestOf, MS.MatchId, MS.UniqueMatch",
+            fields="MS.Team1, MS.Team2, MS.DateTime_UTC, MS.OverviewPage, MS.ShownName, MS.BestOf, MS.MatchId, MS.UniqueMatch, MS.FF",
             where=cargo_request_param,
             limit="max"
         )
@@ -213,12 +213,17 @@ def fetch_schedules_data():
 
             match_exist  = Matches.find_one({'MatchId' : match['MatchId']})
             if match_exist :
+                if (match['FF']) :
+                    match_data['Status'] = 'OVER'
                 result = Matches.update_one(
                     {"MatchId" : match['MatchId']},
                     {"$set" : match_data}
                 )
             else :
-                match_data['Status'] = 'NOT_STARTED'
+                if (match['FF']) :
+                    match_data['Status'] = 'OVER'
+                else :
+                    match_data['Status'] = 'NOT_STARTED'
                 result = Matches.insert_one(match_data)
         time.sleep(2)
 
