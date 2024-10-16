@@ -4,6 +4,7 @@ import { Link , useLocation } from 'react-router-dom';
 import { CookieContext } from '../../context/CookieContext';
 import { UserContext } from '../../context/UserContext';
 import RegisterDialog from '../spec/RegisterDialog';
+import HeSheet from '../spec/HeSheet';
 
 const Header = () =>
 {
@@ -50,11 +51,12 @@ const Header = () =>
                 }
                 
 			</div>
-			<div className='flex-1 flex justify-end items-center '>
+			<div className='flex-1 flex justify-end items-center pr-8'>
 			{
             isLogged && userData ? (
-                <div>
+                <div className='flex flex-row items-center gap-4'>
                     <h1 className='uppercase font-black font-sans text-xl text-ltext'>{userData.username}</h1>
+                    <HeSheet userData={userData} />
                 </div>
             ) : (
                 <div>
