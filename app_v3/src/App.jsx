@@ -9,6 +9,7 @@ import { ScheduleContext } from './context/ScheduleContext';
 import { CookieContext } from './context/CookieContext';
 import { UserContext } from './context/UserContext';
 import { BetsContext } from './context/BetsContext';
+import { GeneralDataContext } from './context/GeneralDataContext';
 
 import HomePage from './pages/HomePage';
 import BetsPage from './pages/BetsPage';
@@ -28,6 +29,7 @@ function App()
 	const { fetchLogCookie , isLogged } = useContext(CookieContext);
 	const { fetchUser } = useContext(UserContext);
 	const { fetchAllBets , fetchGlobalBets } = useContext(BetsContext);
+	const { fetchUserRanking } = useContext(GeneralDataContext);
 
 	useEffect(() =>
 	{
@@ -73,6 +75,12 @@ function App()
 			setLoadingText('Chargement des images...')
 		}
 
+		const initGeneralData = async () =>
+		{
+			await fetchUserRanking();
+			setLoadingValue(70);
+		}
+
 		const initAll = async () =>
 		{
 			await initCookie();
@@ -85,6 +93,7 @@ function App()
 			} else {
 				await initUnlogBets();
 			}
+			await initGeneralData();
 			// await initImages( scheduleData , overData );
 		}
 		initAll();

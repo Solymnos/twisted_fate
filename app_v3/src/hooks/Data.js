@@ -1,4 +1,4 @@
-import { apiSchedule , apiOver , apiUserBetsLive , apiUserBetsOver , apiGlobalBets, apiUpdateBet, apiCancelBet } from "../services/API";
+import { apiSchedule , apiOver , apiUserBetsLive , apiUserBetsOver , apiGlobalBets, apiUpdateBet, apiCancelBet , apiGetUserRanking } from "../services/API";
 
 export const getSchedule = async () =>
 {
@@ -82,5 +82,16 @@ export const cancelBet = async ({ matchId , betType }) =>
     } catch ( error )
     {
         return { success : false , error : error , response : null }
+    }
+}
+
+export const getUserRanking = async () =>
+{
+    try {
+        let response = await apiGetUserRanking();
+        return { success : true , error : null , response : response.data.data }
+    } catch ( error )
+    {
+        return { success : false , error :  error , response : null }
     }
 }

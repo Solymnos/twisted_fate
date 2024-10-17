@@ -8,6 +8,7 @@ import { OverProvider } from './context/OverContext.jsx'
 import { CookieProvider } from './context/CookieContext.jsx'
 import { UserProvider } from './context/UserContext.jsx'
 import { BetsProvider } from './context/BetsContext.jsx'
+import { GeneralDataProvider } from './context/GeneralDataContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -16,7 +17,9 @@ createRoot(document.getElementById('root')).render(
         <ScheduleProvider>
           <OverProvider>
             <BetsProvider>
-              <App />
+              <GeneralDataProvider>
+                <App />
+              </GeneralDataProvider>
             </BetsProvider>
           </OverProvider>
         </ScheduleProvider>

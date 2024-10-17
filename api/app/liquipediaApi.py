@@ -3,8 +3,9 @@ import json
 import time
 from mwrogue.esports_client import EsportsClient
 import requests
-from app.database import Matches
+from app.database import Matches, Bets, User
 import math
+from bson.objectid import ObjectId
 
 site = EsportsClient("lol")
 LIST_OF_TEAMS_REQUEST = []
@@ -141,26 +142,35 @@ def fetch_results_data():
                         'MatchId' : game['MatchId'],
                         'RiotPlatformGameId' : game['RiotPlatformGameId']
                     })
-                    # TESTER SI LA GAME TERMINE LE MATCH 
-                    isLast, winner = is_last_game_of_bo(match_exist.get('BestOf'), match_exist.get('Team1'), match_exist.get('Team2'), gameList)
-                    if isLast :
-                        Matches.update_one(
-                            {
-                                'MatchId' : game['MatchId']
-                            },
-                            {
-                                '$set' : { 'games' : gameList, 'Status' : 'OVER', 'Winner' : winner }
-                            }
-                        )
-                    else :
-                        Matches.update_one(
-                            {
-                                'MatchId' : game['MatchId']
-                            },
-                            {
-                                '$set' : { 'games' : gameList, 'Status' : 'STARTED' }
-                            }
-                        )
+                # TESTER SI LA GAME TERMINE LE MATCH 
+                isLast, winner = is_last_game_of_bo(match_exist.get('BestOf'), match_exist.get('Team1'), match_exist.get('Team2'), gameList)
+                if isLast :
+                    Matches.update_one(
+                        {
+                            'MatchId' : game['MatchId']
+                        },
+                        {
+                            '$set' : { 'games' : gameList, 'Status' : 'OVER', 'Winner' : winner }
+                        }
+                    )
+                    bets_to_valid = Bets.find({"matchId" : game['MatchId']})
+                    for bet in bets_to_valid:
+                        if bet['status'] == "LIVE" :
+                            Bets.update_one({"_id" : bet['_id']} , {"$set" : { "status" : "OVER" }})
+                            user_id = ObjectId(bet['userId'])
+                            if (bet['predict'] == winner) :
+                                User.update_one({"_id" : user_id} , {"$inc" : { "bsuccess" : 1 }})
+                            else :
+                                User.update_one({"_id" : user_id} , {"$inc" : { "bfail" : 1 }})
+                else :
+                    Matches.update_one(
+                        {
+                            'MatchId' : game['MatchId']
+                        },
+                        {
+                            '$set' : { 'games' : gameList, 'Status' : 'STARTED' }
+                        }
+                    )
             else :
                 print('MatchId not existing')
 

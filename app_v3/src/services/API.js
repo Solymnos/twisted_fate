@@ -97,3 +97,9 @@ export const apiCancelBet = async ({ matchId , betType }) =>
     let response = await axios.post( API_URL + '/bets/cancel', payload, { withCredentials : true});
     return ( response );
 }
+
+export const apiGetUserRanking = async () =>
+{
+    let response = await axios.get( API_URL + '/data/user_rank')
+    return ( response );
+}

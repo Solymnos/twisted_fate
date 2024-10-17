@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Response, status, Depends, HTTPException
 
 from app import riotApi
-from app.database import Matches
+from app.database import Matches, User
 
 router = APIRouter()
 
@@ -17,3 +17,9 @@ async def get_over() :
     matches_over = Matches.find({"Status" : "OVER"}, {"_id" : 0})
     OVER = list(matches_over)
     return { 'status' : 'success' , 'over' : OVER }
+
+@router.get('/user_rank')
+async def get_player_ranking() :
+    users_data = User.find({}, {"username": 1, "pp": 1, "bfail": 1, "bsuccess": 1, "_id": 0})
+    DATA = list(users_data)
+    return { 'status' : 'success' , 'data' : DATA }

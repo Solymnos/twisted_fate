@@ -4,6 +4,7 @@ import Footer from '../components/global/Footer'
 import HPSchedule from '@/components/spec/HPSchedule'
 import HPOver from '@/components/spec/HPOver'
 import HPUserInfos from '@/components/spec/HPUserInfos'
+import HPRank from '@/components/spec/HPRank'
 
 function HomePage() {
   return (
@@ -12,6 +13,7 @@ function HomePage() {
       <div className='w-full grow flex flex-col items-center gap-8'>
         <HPSchedule />
         <HPOver />
+        <HPRank />
         <HPUserInfos />
         <Footer />
       </div>
