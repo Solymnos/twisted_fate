@@ -9,7 +9,8 @@ class UserBaseSchema(BaseModel) :
     role : Union[str, None] = None
     created_at : Union[datetime, None] = None
     updated_at : Union[datetime, None] = None
-
+    bsuccess : Union[str, None] = None
+    bfail : Union[str, None] = None
     class Config :
         orm_mode = True
 

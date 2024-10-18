@@ -19,7 +19,9 @@ def userResponseEntity(user) -> dict :
         'role' : user['role'],
         'pp' : user['pp'],
         'created_at' : user['created_at'],
-        'updated_at' : user['updated_at']
+        'updated_at' : user['updated_at'],
+        'bsuccess' : user['bsuccess'],
+        'bfail' : user['bfail']
     }
 
 def embeddedUserResponse(user) -> dict :

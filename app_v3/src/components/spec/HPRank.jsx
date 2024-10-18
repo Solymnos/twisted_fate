@@ -29,7 +29,7 @@ const HPRank = () =>
 
 
     return (
-        <div className='w-1/3 p-8 flex flex-row gap-8'>
+        <div className='w-1/2 p-8 flex flex-row gap-8'>
             <div className='w-1/3 justify-center items-center align-middle flex'>
                 <div className='bg-hl rounded-3xl text-xl text-dtext font-bold font-sans p-3'>Classement</div>
             </div>
