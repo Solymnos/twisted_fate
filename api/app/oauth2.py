@@ -43,11 +43,15 @@ def require_verified_user(Authorize : AuthJWT = Depends()) :
         error = e.__class__.__name__
         print(error)
         if error == 'MissingTokenError' : 
+            print('1')
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='You are not logged in')
         if error == 'UserNotFound' :
+            print('2')
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='User not found')
-        if error == 'UserNotVerified' :
+        if error == 'NotVerified' :
+            print('3')
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Please verify your account')
+        print('4')
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Token is invalid or has expired')
     return user_id
 

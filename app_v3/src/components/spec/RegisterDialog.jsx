@@ -99,7 +99,7 @@ const RegisterDialog = () =>
             } else 
             {
                   toast({
-                      title : 'Echec de l' + `\'` + 'inscruption',
+                      title : 'Echec de l' + `\'` + 'inscription',
                       description : error,
                       variant : 'destructive'
                   })

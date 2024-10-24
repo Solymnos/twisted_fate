@@ -10,6 +10,8 @@ import { UserProvider } from './context/UserContext.jsx'
 import { BetsProvider } from './context/BetsContext.jsx'
 import { GeneralDataProvider } from './context/GeneralDataContext.jsx'
 
+import { Toaster } from './components/ui/toaster.jsx'
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <CookieProvider>
@@ -19,6 +21,7 @@ createRoot(document.getElementById('root')).render(
             <BetsProvider>
               <GeneralDataProvider>
                 <App />
+                <Toaster />
               </GeneralDataProvider>
             </BetsProvider>
           </OverProvider>

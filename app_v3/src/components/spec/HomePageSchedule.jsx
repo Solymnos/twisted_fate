@@ -52,8 +52,6 @@ const HomePageSchedule = () =>
                 displayScheduleData.push(match);
             }
         }
-        console.log("displayScheduleData")
-        console.log(displayScheduleData)
         return displayScheduleData;
     }
 

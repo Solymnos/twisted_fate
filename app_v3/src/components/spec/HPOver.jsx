@@ -12,8 +12,6 @@ const HPOver = () =>
     const sortedOverData = overData.sort((a , b) => new Date(b.DateTime) - new Date(a.DateTime));
     const displayOverData = sortedOverData.slice(0, 10);
     
-    console.log(sortedOverData);
-    
     return (
         <div className='bg-lightbg w-full p-8 box-border'>
             <Carousel plugins={[Autoplay({ delay : 5000 })]} opts={{ align : 'start', loop: true }} className='w-full'>

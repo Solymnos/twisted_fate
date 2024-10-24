@@ -10,8 +10,6 @@ const HeSheet = ({ userData }) =>
 {
     const { userBetsLive } = useContext(BetsContext);
     const { scheduleData } = useContext(ScheduleContext);
-    console.log(userBetsLive);
-    console.log(scheduleData);
 
     const parseBets = ( userBetsLive , scheduleData ) =>
     {

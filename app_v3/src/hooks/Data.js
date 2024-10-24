@@ -70,6 +70,11 @@ export const updateBet = async ({ matchId , betType , predict }) =>
         return { success : true , error : null , response : response.data.bets }
     } catch ( error )
     {
+        console.log(error);
+        if (error.status == 401 && error.response.data.detail == 'Please verify your account')
+        {
+            return { success : false, error : 'verify', response : null}
+        }
         return { success : false , error : error , response : null } 
     }
 }
@@ -81,6 +86,11 @@ export const cancelBet = async ({ matchId , betType }) =>
         return { success : true , error : null , response : response.data.bets }
     } catch ( error )
     {
+        console.log(error);
+        if (error.code == 401 && error.data.detail == 'Please verify your account')
+        {
+            return { success : false, error : 'verify', response : null}
+        }
         return { success : false , error : error , response : null }
     }
 }

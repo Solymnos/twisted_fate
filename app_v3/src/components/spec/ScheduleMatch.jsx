@@ -6,8 +6,6 @@ const ScheduleMatch = ({ match }) => {
 
 
     const { userBetsLive , setUserBetsLive , globalBets , setGlobalBets } = useContext(BetsContext);
-    console.log("globalbets")
-    console.log(globalBets)
 
     const betExisting = ( matchId ) =>
     {
@@ -51,7 +49,6 @@ const ScheduleMatch = ({ match }) => {
 
     const handleUpdate = async (matchId , betType , predict) =>
     {
-        console.log('MatchID : ' + matchId);
         let { success , error , response } = await updateBet({ matchId : matchId , betType : betType , predict : predict });
         if (success)
         {

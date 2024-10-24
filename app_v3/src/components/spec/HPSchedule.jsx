@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-
+import { Link } from 'react-router-dom';
 import { ScheduleContext } from '@/context/ScheduleContext'
 
 const HPSchedule = () => 
@@ -87,7 +87,7 @@ const HPSchedule = () =>
                 )}
             </div>
             <div className='w-full flex justify-end'>
-                <h2 className='font-sans text-hl text-3xl font-semibold cursor-pointer hover:underline decoration-4 decoration-hl'>Parier sur ces matchs ➔</h2>
+                <Link to='/bets'><h2 className='font-sans text-hl text-3xl font-semibold cursor-pointer hover:underline decoration-4 decoration-hl'>Parier sur ces matchs ➔</h2></Link>
             </div>
         </div>
     )

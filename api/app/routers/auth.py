@@ -13,6 +13,16 @@ router = APIRouter()
 ACCESS_TOKEN_EXPIRES_IN = settings.ACCESS_TOKEN_EXPIRES_IN
 REFRESH_TOKEN_EXPIRES_IN = settings.REFRESH_TOKEN_EXPIRES_IN
 
+@router.get('/valid_mail')
+async def valid_email_request(user_id : str = Depends(oauth2.require_user)):
+    user = User.find_one({'_id': ObjectId(user_id)})
+    if user : 
+        email = user.get('email')
+        token = utils.generate_token_email_validation(email)
+        utils.send_validation_email(email, token)
+    else :
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='User not found')
+
 @router.post('/register', status_code=status.HTTP_201_CREATED, response_model=schemas.UserResponse)
 async def create_user(payload : schemas.CreateUserSchema) :
     user = User.find_one({'email' : payload.email.lower()})

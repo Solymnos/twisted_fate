@@ -88,9 +88,11 @@ function App()
 			await initOver();
 			if ( isLogged )
 			{
+				console.log("PASS IS LOGGED");
 				await initUser();
 				await initBets();
 			} else {
+				console.log("PASS ISNT LOG");
 				await initUnlogBets();
 			}
 			await initGeneralData();
@@ -98,6 +100,42 @@ function App()
 		}
 		initAll();
 	}, []);
+
+
+	useEffect(() =>
+	{
+		const initBets = async () =>
+		{
+			await fetchAllBets();
+			setLoadingValue(50);
+			setLoadingText('Chargement des images...')
+		}
+
+		const initUnlogBets = async () =>
+		{
+			await fetchGlobalBets();
+			setLoadingValue(50);
+			setLoadingText('Chargement des images...')
+		}
+
+		const initUser = async () =>
+		{
+			await fetchUser();
+			setLoadingValue(40);
+			setLoadingText('Chargement des bets...')
+		}
+
+		if (isLogged)
+		{
+			console.log("FINALLY LOG");
+			initUser();
+			initBets();
+		} else {
+			console.log("STILL UNLOG");
+			initUnlogBets();
+		}
+		
+	}, [ isLogged ])
 
 	useEffect(() =>
 	{

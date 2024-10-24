@@ -1,4 +1,4 @@
-import { apiRegister, apiLogin } from "../services/API";
+import { apiRegister, apiLogin , apiLogout , apiRequestMailValidation } from "../services/API";
 
 export const userRegister = async ({ username , email , password , confirm_password }) =>
 {
@@ -22,11 +22,39 @@ export const userLogin = async ({ username , email , password }) =>
         return { success : true , error : null , response : response }
     } catch ( error )
     {
+        console.log("ERROR")
+        console.log(error);
+        //if (error.code === 'ERR_NETWORK')
+        //{
+        //    return { success : false , error : 'Server inactif', response : null }
+        //}
+        return { success : false , error : error.response.data.detail , response : null }
+    }
+}
+
+export const userLogout = async () =>
+{
+    try {
+        let response = await apiLogout()
+        return { success : true , error : null , response : response }
+    } catch (error)
+    {
         console.log(error);
         if (error.code === 'ERR_NETWORK')
         {
-            return { success : false , error : 'Server inactif', response : null }
+            return { success : false , error : 'Serveur inactif', response : null }
         }
+        return { success : false , error : error.response.data.detail , response : null }
+    }
+}
+
+export const requestMailValidation = async () =>
+{
+    try {
+        let response = await apiRequestMailValidation()
+        return { success : true , error : null , response : response }
+    } catch (error)
+    {
         return { success : false , error : error.response.data.detail , response : null }
     }
 }

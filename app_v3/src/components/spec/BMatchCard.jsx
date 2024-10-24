@@ -1,11 +1,16 @@
 import React, { useContext } from 'react'
 import { BetsContext } from '@/context/BetsContext';
 import { updateBet , cancelBet } from '@/hooks/Data';
+import { ToastAction } from '@radix-ui/react-toast';
+import { useToast } from '@/hooks/use-toast';
+import { requestMailValidation } from '@/hooks/Auth';
 
 const BMatchCard = ({ match }) => 
 {
     const { userBetsLive , fetchUserBetsLive , globalBets , fetchGlobalBets } = useContext(BetsContext);
     
+    const { toast } = useToast();
+
     const betExisting = ( matchId ) =>
     {
         for (let i = 0 ;  i < userBetsLive.length ; i++)
@@ -45,6 +50,18 @@ const BMatchCard = ({ match }) =>
         }
     }
 
+    const handleRequestMailValidation = async () =>
+    {
+        let { success , error , response } = await requestMailValidation();
+        if (success)
+        {
+            toast({
+                title : 'Valider votre compte',
+                description : 'Un email à été envoyé à votre adresse mail pour la validation de votre compte'
+            })
+        }
+    }
+
     const handleUpdate = async (matchId, betType, predict) =>
     {
         let { success , error , response } = await updateBet({ matchId : matchId , betType : betType , predict : predict});
@@ -52,6 +69,15 @@ const BMatchCard = ({ match }) =>
         {
             await fetchUserBetsLive();
             await fetchGlobalBets();
+        } else {
+            if (error == 'verify')
+            {
+                toast({
+                    title : 'Erreur lors du vote',
+                    description : 'Vous devez valider votre compte avant de pouvoir voter',
+                    action: <ToastAction altText="Valider mon compte" onClick={() => handleRequestMailValidation()}>Valider mon compte</ToastAction>
+                })
+            }
         }
     }
 

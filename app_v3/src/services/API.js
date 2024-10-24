@@ -39,6 +39,12 @@ export const apiLogin = async({ username , email , password }) =>
     return ( response );
 }
 
+export const apiLogout = async () =>
+{
+    let response = await axios.get(API_URL + '/auth/logout', { withCredentials : true });
+    return ( response );
+}
+
 export const apiMe = async() =>
 {
     let response = await axios.get( API_URL + '/users/me' , { withCredentials : true });
@@ -101,5 +107,11 @@ export const apiCancelBet = async ({ matchId , betType }) =>
 export const apiGetUserRanking = async () =>
 {
     let response = await axios.get( API_URL + '/data/user_rank')
+    return ( response );
+}
+
+export const apiRequestMailValidation = async () =>
+{
+    let response = await axios.get( API_URL + '/auth/valid_mail', { withCredentials : true })
     return ( response );
 }

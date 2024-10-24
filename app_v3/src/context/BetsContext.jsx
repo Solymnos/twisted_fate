@@ -1,6 +1,6 @@
-import React , { createContext , useState , useEffect } from 'react';
+import React , { createContext , useState , useEffect, useContext } from 'react';
 import { getUserBetsLive , getUserBetsOver , getGlobalBets } from '../hooks/Data';
-
+import { CookieContext } from './CookieContext';
 export const BetsContext = createContext();
 
 export const BetsProvider = ({ children }) =>
@@ -8,6 +8,17 @@ export const BetsProvider = ({ children }) =>
     const [ userBetsLive , setUserBetsLive ] = useState([]);
     const [ userBetsOver , setUserBetsOver ] = useState([]);
     const [ globalBets , setGlobalBets ] = useState([]);
+
+    const { isLogged } = useContext(CookieContext);
+
+    useEffect(() =>
+    {
+        if (!isLogged)
+        {
+            setUserBetsLive([]);
+            setUserBetsOver([]);
+        }
+    }, [isLogged])
 
     const fetchUserBetsLive = async () =>
     {
