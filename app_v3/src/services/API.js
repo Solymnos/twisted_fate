@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 
 let API_URL = 'http://localhost:8000/api';
-
+//let API_URL = 'http://45.133.178.248:8001/api';
 export const apiRegister = async({ username , email , password , confirm_password }) =>
 {
     const payload = {

@@ -99,11 +99,11 @@ const BMatchCard = ({ match }) =>
             {
                 matchBetsData.team1Percentage > matchBetsData.team2Percentage ? (
                     <div className='text-hl rotate-180 text-3xl text-center font-bold font-sans' style={{ writingMode : 'vertical-rl'}}>
-                        {matchBetsData.team1Percentage}%
+                        {parseFloat(matchBetsData.team1Percentage.toFixed(2))}%
                     </div>
                 ) : (
                     <div className='text-ltext rotate-180 text-3xl text-center font-bold font-sans' style={{ writingMode : 'vertical-rl'}}>
-                        {matchBetsData.team1Percentage}%
+                        {parseFloat(matchBetsData.team1Percentage.toFixed(2))}%
                     </div>
                 )
             }
@@ -145,11 +145,11 @@ const BMatchCard = ({ match }) =>
             {
                 matchBetsData.team2Percentage > matchBetsData.team1Percentage ? (
                     <div className='text-hl rotate-270 text-3xl text-center font-bold font-sans' style={{ writingMode : 'vertical-rl'}}>
-                        {matchBetsData.team2Percentage}%
+                        {parseFloat(matchBetsData.team2Percentage.toFixed(2))}%
                     </div>
                 ) : (
                     <div className='text-ltext rotate-270 text-3xl text-center font-bold font-sans' style={{ writingMode : 'vertical-rl'}}>
-                        {matchBetsData.team2Percentage}%
+                        {parseFloat(matchBetsData.team2Percentage.toFixed(2))}%
                     </div>
                 )
             }
