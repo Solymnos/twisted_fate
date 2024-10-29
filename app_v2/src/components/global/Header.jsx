@@ -19,7 +19,6 @@ const Header = () =>
             <div className='flex flex-row items-center gap-4'>
                 <Link to='/bets'><h2 className='text-mWhite font-thunder font-black text-3xl cursor-pointer hover:underline decoration-4 decoration-mDark'>Bets</h2></Link>
                 <Link to='/rank'><h2 className='text-mWhite font-thunder font-black text-3xl cursor-pointer hover:underline decoration-4 decoration-mDark'>Notes</h2></Link>
-                <Link to='/team'><h2 className='text-mWhite font-thunder font-black text-3xl cursor-pointer hover:underline decoration-4 decoration-mDark'>Team</h2></Link>
                 <Link to='/profile'><h2 className='text-mWhite font-thunder font-black text-3xl cursor-pointer hover:underline decoration-4 decoration-mDark'>Profil</h2></Link>
             </div>
         </div>
@@ -42,3 +41,7 @@ const Header = () =>
 export default Header
 
 // <Button className='bg-mWhite text-mDark text-xl p-6 rounded-3xl hover:text-mWhite font-thunder font-bold' >Se connecter</Button>
+
+/*
+ *<Link to='/team'><h2 className='text-mWhite font-thunder font-black text-3xl cursor-pointer hover:underline decoration-4 decoration-mDark'>Team</h2></Link>
+ */              

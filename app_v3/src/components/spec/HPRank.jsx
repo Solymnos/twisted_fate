@@ -13,7 +13,7 @@ const HPRank = () =>
         {
             let per = 0;
 
-            if (userRanking[i].bsuccess != 0 && userRanking[i].bfail != 0)
+            if (userRanking[i].bsuccess != 0 || userRanking[i].bfail != 0)
             {
                 per = userRanking[i].bsuccess/(userRanking[i].bsuccess + userRanking[i].bfail) * 100;
             }

@@ -30,18 +30,11 @@ const Header = () =>
 				}
 			    {
 			        location.pathname === '/rank' ? (
-			            <Link to='/rank'><h2 className='font-sans text-hl text-2xl cursor-pointer'>Notes</h2></Link>
+			            <Link to='/rank'><h2 className='font-sans text-hl text-2xl cursor-pointer'>Classement</h2></Link>
 			        ) : (
-			            <Link to='/rank'><h2 className='font-sans text-ltext text-2xl cursor-pointer transition-all duration-1000 bg-clip-text' id='appear'>Notes</h2></Link>
+			            <Link to='/rank'><h2 className='font-sans text-ltext text-2xl cursor-pointer transition-all duration-1000 bg-clip-text' id='appear'>Classement</h2></Link>
 			        )
 			    }
-                {
-                    location.pathname === '/team' ? (
-                        <Link to='/team'><h2 className='font-sans text-hl text-2xl cursor-pointer'>Team</h2></Link>
-                    ) : (
-						<Link to='/team'><h2 className='font-sans text-ltext text-2xl cursor-pointer transition-all duration-1000 bg-clip-text' id='appear'>Team</h2></Link>
-                    )
-                }
                 {
                     location.pathname === '/profile' ? (
                         <Link to='/profile'><h2 className='font-sans text-hl text-2xl cursor-pointer'>Profil</h2></Link>
@@ -75,24 +68,12 @@ export default Header
 
 /*
 
-<div className='flex flex-row w-full min-h-24 p-8 items-center justify-between'>
-        <div className='flex flex-row items-center gap-8'>
-            <Link to='/'><h1 className='text-ltext font-thunder font-black text-6xl tracking-tight cursor-pointer'>TWISTED<span className='text-hl'>FATE</span></h1></Link>
-            <div className='flex flex-row items-center gap-4'>
-                
-            </div>
-        </div>
-        {
-          isLogged && userData ? (
-            <div>
-              <h1 className='uppercase font-black'>{userData.username}</h1>
-            </div>
-          ) : (
-            <div>
-              <RegisterDialog updateLoggedCookie={updateLoggedCookie}/>
-            </div>
-          )
-        }
-        
-    </div>
-  */
+{
+    location.pathname === '/team' ? (
+        <Link to='/team'><h2 className='font-sans text-hl text-2xl cursor-pointer'>Team</h2></Link>
+    ) : (
+		<Link to='/team'><h2 className='font-sans text-ltext text-2xl cursor-pointer transition-all duration-1000 bg-clip-text' id='appear'>Team</h2></Link>
+    )
+}
+
+*/
