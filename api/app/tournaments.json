@@ -11,6 +11,14 @@
         {
             "OverviewPage" : "Coupe de France 2024",
             "Region" : "EMEA"
+        },
+        {
+            "OverviewPage" : "Sigma Cup 2024",
+            "Region" : "CHINA"
+        },
+        {
+            "OverviewPage" : "2024 LoL KeSPA Cup",
+            "Region" : "KOREA"
         }
     ]
 }

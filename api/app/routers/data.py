@@ -20,6 +20,6 @@ async def get_over() :
 
 @router.get('/user_rank')
 async def get_player_ranking() :
-    users_data = User.find({}, {"username": 1, "pp": 1, "bfail": 1, "bsuccess": 1, "_id": 0})
+    users_data = User.find({}, {"username": 1, "pp": 1, "bets": 1, "_id": 0})
     DATA = list(users_data)
     return { 'status' : 'success' , 'data' : DATA }

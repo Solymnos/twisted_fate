@@ -114,7 +114,7 @@ def fetch_results_data():
         cargo_request_param = f"OverviewPage IN ('{tournament['OverviewPage']}')"
         response = site.cargo_client.query(
             tables="ScoreboardGames=SG",
-            fields="SG.OverviewPage, SG.Team1, SG.Team2, SG.WinTeam, SG.LossTeam, SG.DateTime_UTC, SG.Winner, SG.Team1Picks, SG.Team2Picks, SG.Team1Players, SG.Team2Players, SG.Gamename, SG.GameId, SG.MatchId, SG.RiotPlatformGameId",
+            fields="SG.OverviewPage, SG.Team1, SG.Team2, SG.WinTeam, SG.LossTeam, SG.DateTime_UTC, SG.Winner, SG.Team1Picks, SG.Team2Picks, SG.Team1Players, SG.Team2Players, SG.Gamename, SG.GameId, SG.MatchId, SG.RiotPlatformGameId, SG.Tournament",
             where=cargo_request_param,
             limit="max"
         )
@@ -140,7 +140,8 @@ def fetch_results_data():
                         'Gamename' : game['Gamename'],
                         'GameId' : game['GameId'],
                         'MatchId' : game['MatchId'],
-                        'RiotPlatformGameId' : game['RiotPlatformGameId']
+                        'RiotPlatformGameId' : game['RiotPlatformGameId'],
+                        'Tournament' : game['Tournament']
                     })
                 # TESTER SI LA GAME TERMINE LE MATCH 
                 isLast, winner = is_last_game_of_bo(match_exist.get('BestOf'), match_exist.get('Team1'), match_exist.get('Team2'), gameList)
@@ -159,9 +160,25 @@ def fetch_results_data():
                             Bets.update_one({"_id" : bet['_id']} , {"$set" : { "status" : "OVER" }})
                             user_id = ObjectId(bet['userId'])
                             if (bet['predict'] == winner) :
-                                User.update_one({"_id" : user_id} , {"$inc" : { "bsuccess" : 1 }})
+                                userBet = User.update_one({"_id" : user_id, "bets.OverviewPage" : game['OverviewPage']}, {"$inc" : { "bets.$.bSuccess" : 1 }})
+                                if userBet.matched_count == 0 :
+                                    newBet = {
+                                        "OverviewPage" : game["OverviewPage"],
+                                        "Tournament" : game["Tournament"],
+                                        "bSuccess" : 1,
+                                        "bFail" : 0
+                                    }
+                                    User.update_one({"_id" : user_id} , {"$push" : { "bets" : newBet}})
                             else :
-                                User.update_one({"_id" : user_id} , {"$inc" : { "bfail" : 1 }})
+                                userBet = User.update_one({"_id" : user_id, "bets.OverviewPage" : game['OverviewPage']}, {"$inc" : { "bets.$.bFail" : 1}})
+                                if userBet.matched_count == 0 :
+                                    newBet = {
+                                        "OverviewPage" : game["OverviewPage"],
+                                        "Tournament" : game["Tournament"],
+                                        "bSuccess" : 0,
+                                        "bFail" : 1
+                                    }
+                                    User.update_one({"_id" : user_id} , {"$push" : { "bets" : newBet}})
                 else :
                     Matches.update_one(
                         {
