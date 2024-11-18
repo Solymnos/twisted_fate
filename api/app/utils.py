@@ -24,7 +24,7 @@ def send_validation_email(email, token) :
     password = settings.MAIL_APP_KEY
 
     subject = 'Email verification'
-    body = f'Please click on the link to verifiy your email : http://localhost:8000/api/auth/verify/{token}'
+    body = f'Please click on the link to verifiy your email : http://45.133.178.248:8001/api/auth/verify/{token}'
 
     msg = MIMEMultipart()
     msg['From'] = sender_email
