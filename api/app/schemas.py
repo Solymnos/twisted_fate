@@ -11,6 +11,7 @@ class UserBaseSchema(BaseModel) :
     updated_at : Union[datetime, None] = None
     bsuccess : Union[str, None] = None
     bfail : Union[str, None] = None
+    bets : Union[list, None] = None
     class Config :
         orm_mode = True
 

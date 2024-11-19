@@ -44,6 +44,7 @@ async def create_user(payload : schemas.CreateUserSchema) :
     payload.pp = 'https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg'
     payload.bsuccess = 0
     payload.bfail = 0
+    payload.bets = []
 
     token = utils.generate_token_email_validation(payload.email)
     utils.send_validation_email(payload.email, token)
