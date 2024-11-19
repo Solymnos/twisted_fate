@@ -25,7 +25,7 @@ export const email_validation = (email) =>
 
 export const password_validation = (password) =>
 {
-    const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$%*?&]{8,}$/;
+    const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&#^~_-+=|()[\]{}<>€£¥₩฿])[A-Za-z\d@$%*?&]{8,}$/;
     if (!regex.test(password))
     {
         return false;

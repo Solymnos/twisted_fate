@@ -76,7 +76,7 @@ const RegisterDialog = () =>
         {
                toast({
                    title : 'Mot de passe invalide',
-                   description : 'Le mot de passe est invalide.\n- 8 caractères minimum.\n- 1 lettre majuscule.\n- 1 lettre minuscule.\n- 1 chiffre.\n- 1 caractère spécial (@,$,%,*,?,&).',
+                   description : 'Le mot de passe est invalide.\n- 8 caractères minimum.\n- 1 lettre majuscule.\n- 1 lettre minuscule.\n- 1 chiffre.\n- 1 caractère spécial (@,$,%,*,?,&, !, #, ^, ~, _, -, +, =, |, (, ), [, ], {, }, <, >, €, £, ¥, ₩, ฿, ₿).',
                    variant : 'destructive'
                })
         } else if (reg_password !== reg_confirm_password)

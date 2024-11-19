@@ -4,14 +4,21 @@ import { Card, CardContent } from '@/components/ui/card';
 const getTeamScore = ( teamName , match ) =>
 {
     let teamScore = 0;
-    
-    for ( let  i = 0 ; i < match.games.length ; i++ )
-    {
-        if (match.games[i].WinTeam == teamName)
-        {
-            teamScore++;
-        }
+
+    try {
+        for ( let  i = 0 ; i < match.games.length ; i++ )
+            {
+                if (match.games[i].WinTeam == teamName)
+                {
+                    teamScore++;
+                }
+            }
+    } catch (error) {
+        console.log("ERROR")
+        console.log(match)
+        console.log(error)
     }
+    
     return teamScore;
 }
 
